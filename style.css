@@ -129,3 +129,16 @@ th {
   background-color: #92edeb; /* Cor ao passar o mouse */
   color: #283a44;
 }
+
+#menu-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: #20c6d6;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1100;
+}
