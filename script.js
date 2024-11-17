@@ -90,9 +90,9 @@ function calcularProdutos(consumoDiarioKcal) {
   tableBody.innerHTML = "";
 
   
-let qualidade = document.getElementById("qualidade").value.toLowerCase();
+let qualidade;
 
-let qualidade = document.getElementById("qualidade").value.toLowerCase();
+let qualidade;
 const racoesFiltradas = racoes.filter(racao =>
   racao.tipo === document.getElementById("tipo-pet").value.toLowerCase() &&
   racao.categoria.toLowerCase() === qualidade &&
