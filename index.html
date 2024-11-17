@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthyPaws</title>
+  <link href="https://fonts.googleapis.com/css2?family=Gliker:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
+      background-color: #fdeae3;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #20c6d6;
+      font-family: 'Gliker', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #92edeb;
+      padding: 15px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sidebar a {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #20c6d6;
+      margin-bottom: 10px;
+      text-align: center;
+      transition: background-color 0.3s ease-in-out;
+    }
+    .sidebar a:hover {
+      background-color: #18b0c1;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-container {
+      width: 100%;
+      max-width: 600px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      display: none;
+      flex-direction: column;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .step-container.active {
+      display: flex;
+    }
+    label {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    input, select {
+      font-size: 16px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background-color: #fdfdfd;
+    }
+    .step-controls {
+      display: flex;
+      justify-content: space-between;
+    }
+    .step-controls button {
+      background: #92edeb;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .step-controls button:hover {
+      background-color: #20c6d6;
+    }
+    #calcular {
+      margin: 0 auto;
+      margin-top: 15px;
+    }
+    .result {
+      display: none;
+      width: 100%;
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+    .carousel {
+      display: flex;
+      overflow: hidden;
+      position: relative;
+      height: 200px;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .carousel-card {
+      flex: 0 0 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .carousel-controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .carousel-controls button {
+      background: #92edeb;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .carousel-controls button:hover {
+      background-color: #20c6d6;
+    }
+    .comparativo {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>HealthyPaws</h2>
+    
+  </div>
+
+  <div class="content">
+    <h1>HealthyPaws</h1>
+    <div class="step-container active" id="step1">
+      <h2>Etapa 1: Tipo de Pet</h2>
+      <label for="tipo-pet">Selecione o tipo de pet:</label>
+      <select id="tipo-pet" required>
+        <option value="cao">Cachorro</option>
+        <option value="gato">Gato</option>
+      </select>
+      <div class="step-controls">
+        <button onclick="nextStep(2)">Próximo ➡️</button>
+      </div>
+    </div>
+
+    <div class="step-container" id="step2">
+      <h2>Etapa 2: Peso e Idade</h2>
+      <label for="peso">Peso do Pet (kg):</label>
+      <input type="number" id="peso" min="1" placeholder="Ex: 10" required>
+      <label for="idade">Idade do Pet:</label>
+      <select id="idade" required>
+        <option value="adulto">Adulto</option>
+        <option value="jovem">Jovem</option>
+        <option value="idoso">Idoso</option>
+      </select>
+      <div class="step-controls">
+        <button onclick="prevStep(1)">⬅️ Voltar</button>
+        <button onclick="nextStep(3)">Próximo ➡️</button>
+      </div>
+    </div>
+
+    <div class="step-container" id="step3">
+      <h2>Etapa 3: Nível de Atividade</h2>
+      <label for="atividade">Nível de Atividade:</label>
+      <select id="atividade" required>
+        <option value="1.6">Sedentário</option>
+        <option value="2.0">Ativo</option>
+        <option value="3.0">Filhote (até 4 meses)</option>
+      </select>
+      <div class="step-controls">
+        <button onclick="prevStep(2)">⬅️ Voltar</button>
+        <button id="calcular">🐾 Calcular</button>
+      </div>
+    </div>
+
+    <div class="result" id="produtos">
+      <h2>Resultados</h2>
+      <div class="carousel">
+        <div class="carousel-track" id="carouselTrack"></div>
+      </div>
+      <div class="carousel-controls">
+        <button class="prev" onclick="prevSlide()">⬅️ Voltar</button>
+        <button class="next" onclick="nextSlide()">Próximo ➡️</button>
+      </div>
+      <div class="comparativo" id="comparativo">
+        <h3>Comparativo das Melhores Opções</h3>
+        <p id="melhorOpcao"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    
+const racoes = [
+  {
+    nome: "GrandPlus",
+    preco: 115.00,
+    densidade: 3200,
+    pesoPacote: 15,
+    imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_935189-MLU76514953676_052024-F.webp"
+  },
+  {
+    nome: "FinoTrato",
+    preco: 165.16,
+    densidade: 3600,
+    pesoPacote: 15,
+    imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_740119-MLU78441615850_082024-F.webp"
+  },
+  {
+    nome: "Quatree Premium EspecialLife",
+    preco: 170.91,
+    densidade: 3650,
+    pesoPacote: 15,
+    imagem: "https://example.com/images/quatree.jpg" /* Atualizar com o link real */
+  }
+];
+
+      { nome: "GrandPlus", preco: 115.00, densidade: 3200, pesoPacote: 15, tipo: "cao", idade: "adulto" },
+      { nome: "FinoTrato", preco: 165.16, densidade: 3600, pesoPacote: 15, tipo: "cao", idade: "adulto" },
+      { nome: "Quatree Premium EspecialLife", preco: 170.91, densidade: 3650, pesoPacote: 15, tipo: "cao", idade: "adulto" }
+    ];
+
+    let currentSlide = 0;
+
+    function nextStep(step) {
+      document.querySelector(".step-container.active").classList.remove("active");
+      document.getElementById(`step${step}`).classList.add("active");
+    }
+
+    function prevStep(step) {
+      document.querySelector(".step-container.active").classList.remove("active");
+      document.getElementById(`step${step}`).classList.add("active");
+    }
+
+    document.getElementById("calcular").addEventListener("click", () => {
+      const tipoPet = document.getElementById("tipo-pet").value;
+      const peso = parseFloat(document.getElementById("peso").value);
+      const idadePet = document.getElementById("idade").value;
+      const atividade = parseFloat(document.getElementById("atividade").value);
+
+      if (isNaN(peso) || isNaN(atividade) || !idadePet) {
+        alert("Preencha todos os campos.");
+        return;
+      }
+
+      const racoesFiltradas = racoes.filter(racao => racao.tipo === tipoPet && racao.idade === idadePet);
+
+      if (racoesFiltradas.length === 0) {
+        alert("Não há rações disponíveis para esse tipo de pet e idade.");
+        return;
+      }
+
+      const RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
+      const consumoDiarioKcal = RER * atividade;
+
+      calcularProdutos(consumoDiarioKcal, racoesFiltradas);
+      document.getElementById("produtos").style.display = "block";
+    });
+
+    function calcularProdutos(consumoDiarioKcal, racoesFiltradas) {
+      const carouselTrack = document.getElementById("carouselTrack");
+      carouselTrack.innerHTML = "";
+
+      const resultados = racoesFiltradas.map(racao => {
+        const consumoDiarioGramas = (consumoDiarioKcal / racao.densidade) * 1000;
+        const custoDiario = (consumoDiarioGramas / 1000) * (racao.preco / racao.pesoPacote);
+        const duracaoPacote = (racao.pesoPacote * 1000) / consumoDiarioGramas;
+
+        const card = `
+          <div class="carousel-card">
+            <h3>${racao.nome}</h3>
+            <p><strong>Preço Total:</strong> R$ ${racao.preco.toFixed(2)}</p>
+            <p><strong>Consumo Diário:</strong> ${consumoDiarioGramas.toFixed(2)} g</p>
+            <p><strong>Custo Diário:</strong> R$ ${custoDiario.toFixed(2)}</p>
+            <p><strong>Duração Estimada:</strong> ${Math.floor(duracaoPacote)} dias</p>
+          </div>
+        `;
+        carouselTrack.innerHTML += card;
+
+        return { ...racao, custoDiario, duracaoPacote };
+      });
+
+      mostrarComparativo(resultados);
+    }
+
+    function mostrarComparativo(resultados) {
+      const melhores = resultados.sort((a, b) => a.custoDiario - b.custoDiario).slice(0, 2);
+      const comparativo = document.getElementById("comparativo");
+      comparativo.style.display = "block";
+      document.getElementById("melhorOpcao").innerHTML = `
+        A melhor opção é <strong>${melhores[0].nome}</strong> com custo diário de R$ ${melhores[0].custoDiario.toFixed(2)} 
+        e duração estimada de ${Math.floor(melhores[0].duracaoPacote)} dias.<br>
+        A segunda melhor opção é <strong>${melhores[1].nome}</strong> com custo diário de R$ ${melhores[1].custoDiario.toFixed(2)} 
+        e duração estimada de ${Math.floor(melhores[1].duracaoPacote)} dias.
+      `;
+    }
+
+    function nextSlide() {
+      const track = document.getElementById("carouselTrack");
+      const slides = track.children.length;
+      currentSlide = (currentSlide + 1) % slides;
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function prevSlide() {
+      const track = document.getElementById("carouselTrack");
+      const slides = track.children.length;
+      currentSlide = (currentSlide - 1 + slides) % slides;
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+  
+function exibirMelhoresOpcoes(consumoDiarioKcal) {
+  const comparisonBody = document.getElementById("comparisonBody");
+  comparisonBody.innerHTML = ""; // Limpar resultados anteriores
+
+  const resultados = racoes.map(racao => {
+    const consumoDiarioGramas = (consumoDiarioKcal / racao.densidade) * 1000;
+    const custoDiario = (consumoDiarioGramas / 1000) * (racao.preco / racao.pesoPacote);
+    const duracaoPacote = (racao.pesoPacote * 1000) / consumoDiarioGramas;
+
+    return { 
+      nome: racao.nome,
+      custoDiario,
+      duracaoPacote,
+      custoBeneficio: duracaoPacote / custoDiario
+    };
+  });
+
+  const melhoresOpcoes = resultados.sort((a, b) => b.custoBeneficio - a.custoBeneficio).slice(0, 2);
+
+  melhoresOpcoes.forEach(opcao => {
+    const row = `
+      <tr>
+        <td>${opcao.nome}</td>
+        <td>R$ ${opcao.custoDiario.toFixed(2)}</td>
+        <td>${Math.floor(opcao.duracaoPacote)} dias</td>
+        <td>${opcao.custoBeneficio.toFixed(2)}</td>
+      </tr>
+    `;
+    comparisonBody.innerHTML += row;
+  });
+}
+</script>
+
+</body>
+</html>
+
