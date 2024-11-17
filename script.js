@@ -90,3 +90,24 @@ function calcularProdutos(consumoDiarioKcal) {
 }
 
 // Outras funções (mostrar comparativo, economia) continuam iguais
+
+// Função para mostrar comparativo entre as rações
+function mostrarComparativo(resultados) {
+  const comparativoContainer = document.getElementById("comparativo");
+  comparativoContainer.innerHTML = "<h3>Análise Comparativa</h3>";
+
+  const [melhor, segundaMelhor] = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+
+  const itemHTML = (racao, isMelhor) => `
+    <div class="comparativo-item">
+      <div class="nome" style="color: ${isMelhor ? '#20c6d6' : '#555'};">
+        ${isMelhor ? '🌟 ' : ''}${racao.nome}
+      </div>
+      <div class="custo">Custo Diário: <strong>R$ ${racao.custoDiario.toFixed(2)}</strong></div>
+      <div class="duracao">Duração: <strong>${Math.floor(racao.duracaoPacote)} dias</strong></div>
+    </div>
+  `;
+
+  comparativoContainer.innerHTML += itemHTML(melhor, true);
+  comparativoContainer.innerHTML += itemHTML(segundaMelhor, false);
+}
