@@ -258,6 +258,29 @@ function renderizarGrafico(resultados) {
   });
 }
 document.getElementById("calcular").addEventListener("click", () => {
+  const tipoPet = document.getElementById("tipo-pet").value;
+  const peso = parseFloat(document.getElementById("peso").value);
+  const idade = document.getElementById("idade").value;
+  const atividade = parseFloat(document.getElementById("atividade").value);
+
+  if (isNaN(peso) || !tipoPet || !idade || isNaN(atividade)) {
+    alert("Por favor, preencha todos os campos.");
+    return;
+  }
+
+  const RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
+  const consumoDiarioKcal = RER * atividade;
+
+  const resultados = calcularProdutos(consumoDiarioKcal);
+  if (resultados.length === 0) {
+    alert("Nenhuma ração disponível para o tipo de pet selecionado.");
+    return;
+  }
+
+  mostrarComparativo(resultados);
+  mostrarEconomia(resultados);
+  renderizarGrafico(resultados);
+});
   calcular();
   const resultados = calcularProdutos(consumoDiarioKcal);
   renderizarGrafico(resultados);
