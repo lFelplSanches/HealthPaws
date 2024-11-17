@@ -179,3 +179,11 @@ function limparHistorico() {
   historico = [];
   exibirHistorico();
 }
+document.addEventListener("mousemove", (event) => {
+  const menu = document.querySelector(".menu-lateral");
+  if (event.clientX <= 10) {
+    menu.style.left = "0"; // Mostra o menu ao passar o mouse na borda esquerda
+  } else if (event.clientX > 250) {
+    menu.style.left = "-250px"; // Esconde o menu ao mover o mouse para fora
+  }
+});
