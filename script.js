@@ -1,4 +1,3 @@
-
 let historico = []; // Lista para armazenar o histórico
 let racoes = []; // Lista que será preenchida com os dados do CSV
 
@@ -35,6 +34,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Erro ao carregar as rações:", error);
   }
 });
+document.addEventListener("mousemove", (event) => {
+  const menu = document.querySelector(".menu-lateral");
+  if (event.clientX <= 10) {
+    menu.style.left = "0"; // Mostra o menu ao passar o mouse na borda esquerda
+  } else if (event.clientX > 250) {
+    menu.style.left = "-250px"; // Esconde o menu ao mover o mouse para fora
+  }
+});
 
 document.getElementById("calcular").addEventListener("click", calcular);
 
@@ -68,7 +75,6 @@ function calcular() {
   salvarHistorico(tipoPet, peso, idade, atividade, resultados);
   document.getElementById("results").style.display = "block";
 }
-
 function calcularProdutos(consumoDiarioKcal) {
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
@@ -110,7 +116,6 @@ function mostrarComparativo(resultados) {
     <p><strong>2ª Opção:</strong> ${melhores[1].nome} - Custo Diário: R$ ${melhores[1].custoDiario.toFixed(2)}, Duração: ${Math.floor(melhores[1].duracaoPacote)} dias</p>
   `;
 }
-
 function mostrarEconomia(resultados) {
   if (resultados.length < 2) {
     console.warn("Não há rações suficientes para calcular a economia.");
@@ -179,11 +184,3 @@ function limparHistorico() {
   historico = [];
   exibirHistorico();
 }
-document.addEventListener("mousemove", (event) => {
-  const menu = document.querySelector(".menu-lateral");
-  if (event.clientX <= 10) {
-    menu.style.left = "0"; // Mostra o menu ao passar o mouse na borda esquerda
-  } else if (event.clientX > 250) {
-    menu.style.left = "-250px"; // Esconde o menu ao mover o mouse para fora
-  }
-});
