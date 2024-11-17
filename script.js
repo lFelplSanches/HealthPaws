@@ -1,10 +1,34 @@
 
 let historico = []; // Lista para armazenar o histórico
-const racoes = [
-  { nome: "GrandPlus", preco: 115.00, densidade: 3200, pesoPacote: 15 },
-  { nome: "FinoTrato", preco: 165.16, densidade: 3600, pesoPacote: 15 },
-  { nome: "Quatree Premium EspecialLife", preco: 170.91, densidade: 3650, pesoPacote: 15 }
-];
+let racoes = []; // Lista que será preenchida com os dados do CSV
+
+// Função para carregar os dados das rações do GitHub
+async function carregarRacoes() {
+  const url = 'https://raw.githubusercontent.com/lFelplSanches/HealthPaws/main/racoes.csv'; // URL da planilha
+  const response = await fetch(url);
+  const data = await response.text();
+  const linhas = data.split('\n').slice(1); // Ignorar o cabeçalho
+  racoes = linhas.map(linha => {
+    const [nome, preco, densidade, pesoPacote, tipo] = linha.split(',');
+    return {
+      nome,
+      preco: parseFloat(preco),
+      densidade: parseFloat(densidade),
+      pesoPacote: parseFloat(pesoPacote),
+      tipo: tipo.trim()
+    };
+  });
+  console.log("Rações carregadas:", racoes);
+}
+
+// Carregar as rações ao iniciar o aplicativo
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    await carregarRacoes();
+  } catch (error) {
+    console.error("Erro ao carregar as rações:", error);
+  }
+});
 
 document.getElementById("calcular").addEventListener("click", calcular);
 
@@ -33,23 +57,25 @@ function calcularProdutos(consumoDiarioKcal) {
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = ""; // Limpar resultados anteriores
 
-  const resultados = racoes.map(racao => {
-    const consumoDiarioGramas = (consumoDiarioKcal / racao.densidade) * 1000;
-    const custoDiario = (consumoDiarioGramas / 1000) * (racao.preco / racao.pesoPacote);
-    const duracaoPacote = (racao.pesoPacote * 1000) / consumoDiarioGramas;
+  const resultados = racoes
+    .filter(racao => racao.tipo.toLowerCase() === document.getElementById("tipo-pet").value)
+    .map(racao => {
+      const consumoDiarioGramas = (consumoDiarioKcal / racao.densidade) * 1000;
+      const custoDiario = (consumoDiarioGramas / 1000) * (racao.preco / racao.pesoPacote);
+      const duracaoPacote = (racao.pesoPacote * 1000) / consumoDiarioGramas;
 
-    const row = `
-      <tr>
-        <td>${racao.nome}</td>
-        <td>R$ ${racao.preco.toFixed(2)}</td>
-        <td>${consumoDiarioGramas.toFixed(2)}</td>
-        <td>R$ ${custoDiario.toFixed(2)}</td>
-        <td>${Math.floor(duracaoPacote)}</td>
-      </tr>
-    `;
-    tableBody.innerHTML += row;
-    return { nome: racao.nome, custoDiario, duracaoPacote };
-  });
+      const row = `
+        <tr>
+          <td>${racao.nome}</td>
+          <td>R$ ${racao.preco.toFixed(2)}</td>
+          <td>${consumoDiarioGramas.toFixed(2)}</td>
+          <td>R$ ${custoDiario.toFixed(2)}</td>
+          <td>${Math.floor(duracaoPacote)}</td>
+        </tr>
+      `;
+      tableBody.innerHTML += row;
+      return { nome: racao.nome, custoDiario, duracaoPacote };
+    });
 
   return resultados;
 }
