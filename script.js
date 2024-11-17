@@ -66,7 +66,6 @@ document.getElementById("calcular").addEventListener("click", () => {
   }
 
   mostrarComparativo(resultados);
-  mostrarEconomia(resultados);
   document.getElementById("results").style.display = "block";
 });
 
@@ -89,8 +88,6 @@ function calcularProdutos(consumoDiarioKcal) {
   });
 }
 
-// Outras funções (mostrar comparativo, economia) continuam iguais
-
 // Função para mostrar comparativo entre as rações
 function mostrarComparativo(resultados) {
   const comparativoContainer = document.getElementById("comparativo");
@@ -111,3 +108,6 @@ function mostrarComparativo(resultados) {
   comparativoContainer.innerHTML += itemHTML(melhor, true);
   comparativoContainer.innerHTML += itemHTML(segundaMelhor, false);
 }
+
+// Registrar a função mostrarComparativo no escopo global
+window.mostrarComparativo = mostrarComparativo;
