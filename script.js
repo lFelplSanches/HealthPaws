@@ -10,15 +10,16 @@ async function carregarRacoes() {
     const data = await response.text();
     const linhas = data.split('\n').slice(1); // Ignorar o cabeçalho
     racoes = linhas
-      .filter(l => l.trim() !== "")
+      .filter(l => l.trim() !== "") // Ignorar linhas vazias
       .map(l => {
-        const [nome, preco, densidade, pesoPacote, tipo] = l.split(',');
+        const [nome, preco, densidade, pesoPacote, tipo, categoria] = l.split(',');
         return {
           nome: nome.trim(),
           preco: parseFloat(preco),
           densidade: parseFloat(densidade),
           pesoPacote: parseFloat(pesoPacote),
-          tipo: tipo.trim().toLowerCase()
+          tipo: tipo.trim().toLowerCase(),
+          categoria: categoria ? categoria.trim().toLowerCase() : "standard"
         };
       });
     console.log("Rações carregadas:", racoes);
@@ -39,7 +40,7 @@ document.getElementById("menu-toggle").addEventListener("click", () => {
 // Configurar botão calcular
 document.getElementById("calcular").addEventListener("click", () => {
   console.log("Rações disponíveis:", racoes); // Debug
-  
+
   const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
   const peso = parseFloat(document.getElementById("peso").value);
   const idade = document.getElementById("idade").value;
