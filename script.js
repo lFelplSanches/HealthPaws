@@ -184,3 +184,8 @@ function limparHistorico() {
   historico = [];
   exibirHistorico();
 }
+
+document.getElementById("menu-toggle").addEventListener("click", () => {
+  const menu = document.querySelector(".menu-lateral");
+  menu.style.left = menu.style.left === "0px" ? "-250px" : "0";
+});
