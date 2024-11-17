@@ -1,4 +1,3 @@
-
 let historico = [];
 let racoes = [];
 
@@ -66,6 +65,7 @@ document.getElementById("calcular").addEventListener("click", () => {
   }
 
   mostrarComparativo(resultados);
+  mostrarEconomia(resultados);
   document.getElementById("results").style.display = "block";
 });
 
@@ -109,5 +109,27 @@ function mostrarComparativo(resultados) {
   comparativoContainer.innerHTML += itemHTML(segundaMelhor, false);
 }
 
-// Registrar a função mostrarComparativo no escopo global
+// Função para mostrar análise econômica
+function mostrarEconomia(resultados) {
+  const economiaContainer = document.getElementById("economia");
+  economiaContainer.innerHTML = "<h3>Análise de Economia</h3>";
+
+  const [melhor, segundaMelhor] = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+  const economiaAbsoluta = segundaMelhor.custoDiario - melhor.custoDiario;
+  const economiaPercentual = ((economiaAbsoluta / segundaMelhor.custoDiario) * 100).toFixed(2);
+
+  economiaContainer.innerHTML += `
+    <p>Escolhendo a ração <strong>${melhor.nome}</strong>, você economiza:</p>
+    <ul>
+      <li><strong>R$ ${economiaAbsoluta.toFixed(2)}</strong> por dia.</li>
+      <li><strong>${economiaPercentual}%</strong> em relação à segunda opção mais econômica.</li>
+    </ul>
+    <p style="color: #20c6d6; font-size: 1.2rem;">
+      <strong>${melhor.nome}</strong> é a escolha mais econômica!
+    </p>
+  `;
+}
+
+// Registrar funções no escopo global
 window.mostrarComparativo = mostrarComparativo;
+window.mostrarEconomia = mostrarEconomia;
