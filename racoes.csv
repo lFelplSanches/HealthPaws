@@ -1,4 +1,6 @@
-NOME,PREÇO TOTAL,DENSIDADE ENERGÉTICA,PESO DO PACOTE,TIPO
-GrandPlus,115,3200,15,Cao
-FinoTrato,165,3550,15,Cao
-Quatree Premium Especial Life,170,3650,15,Cao
+NOME,PREÇO TOTAL,DENSIDADE ENERGÉTICA,PESO DO PACOTE,TIPO,CATEGOTIA
+GrandPlus Choice,130,3440,15,Cao,Premium Especial
+FinoTrato,165,3550,15,Cao,Premium Especial
+Quatree Life,170,3650,15,Cao,Premium Especial
+Monello,147.96,3450,15,Cao,Premium Espeial
+Birbo,129.99,3250,15,Cao,Premium
