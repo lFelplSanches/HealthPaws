@@ -11,17 +11,7 @@ async function carregarRacoes() {
     racoes = linhas
       .filter(linha => linha.trim() !== "") // Ignorar linhas vazias
       .map(linha => {
-        
-const [nome, preco, densidade, pesoPacote, tipo, categoria] = linha.split(',');
-return {
-  nome: nome ? nome.trim() : "Desconhecido",
-  preco: preco ? parseFloat(preco) : 0,
-  densidade: densidade ? parseFloat(densidade) : 0,
-  pesoPacote: pesoPacote ? parseFloat(pesoPacote) : 0,
-  tipo: tipo ? tipo.trim().toLowerCase() : "indefinido",
-  categoria: categoria ? categoria.trim() : "Standard"
-};
-
+        const [nome, preco, densidade, pesoPacote, tipo] = linha.split(',');
         return {
           nome: nome ? nome.trim() : "Desconhecido",
           preco: preco ? parseFloat(preco) : 0,
@@ -89,17 +79,7 @@ function calcularProdutos(consumoDiarioKcal) {
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
 
-  
-let qualidade;
-
-let qualidade;
-const racoesFiltradas = racoes.filter(racao =>
-  racao.tipo === document.getElementById("tipo-pet").value.toLowerCase() &&
-  racao.categoria.toLowerCase() === qualidade &&
-
-  racao.tipo === document.getElementById("tipo-pet").value.toLowerCase() &&
-  racao.categoria.toLowerCase() === qualidade &&
- racao.tipo === document.getElementById("tipo-pet").value.toLowerCase());
+  const racoesFiltradas = racoes.filter(racao => racao.tipo === document.getElementById("tipo-pet").value.toLowerCase());
   console.log("Rações filtradas:", racoesFiltradas);
 
   return racoesFiltradas.map(racao => {
@@ -205,14 +185,103 @@ function limparHistorico() {
   exibirHistorico();
 }
 
-// Alterar ordenação dos resultados para priorizar qualidade
-resultados.sort((a, b) => {
-  const prioridade = { "premium especial": 3, "premium": 2, "standard": 1 };
-  return prioridade[b.categoria.toLowerCase()] - prioridade[a.categoria.toLowerCase()] || a.custoDiario - b.custoDiario;
+document.getElementById("menu-toggle").addEventListener("click", () => {
+  const menu = document.querySelector(".menu-lateral");
+  menu.style.left = menu.style.left === "0px" ? "-250px" : "0";
 });
 
-// Alterar ordenação dos resultados para priorizar qualidade
-resultados.sort((a, b) => {
-  const prioridade = { "premium especial": 3, "premium": 2, "standard": 1 };
-  return prioridade[b.categoria.toLowerCase()] - prioridade[a.categoria.toLowerCase()] || a.custoDiario - b.custoDiario;
+function mostrarComparativo(resultados) {
+  const comparativoContainer = document.getElementById("comparativo");
+  comparativoContainer.innerHTML = "<h3>Análise Comparativa</h3>";
+
+  const [melhor, segundaMelhor] = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+
+  const itemHTML = (racao, isMelhor) => `
+    <div class="comparativo-item">
+      <div class="nome" style="color: ${isMelhor ? '#20c6d6' : '#555'};">
+        ${isMelhor ? '🌟 ' : ''}${racao.nome}
+      </div>
+      <div class="custo">Custo Diário: <strong>R$ ${racao.custoDiario.toFixed(2)}</strong></div>
+      <div class="duracao">Duração: <strong>${Math.floor(racao.duracaoPacote)} dias</strong></div>
+    </div>
+  `;
+
+  comparativoContainer.innerHTML += itemHTML(melhor, true);
+  comparativoContainer.innerHTML += itemHTML(segundaMelhor, false);
+}
+
+function mostrarEconomia(resultados) {
+  const economiaContainer = document.getElementById("economia");
+  economiaContainer.innerHTML = "<h3>Análise de Economia</h3>";
+
+  const [primeira, segunda] = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+  const economiaAbsoluta = segunda.custoDiario - primeira.custoDiario;
+  const economiaPercentual = ((economiaAbsoluta / segunda.custoDiario) * 100).toFixed(2);
+
+  economiaContainer.innerHTML += `
+    <p>Ao escolher a melhor opção, <strong>${primeira.nome}</strong>, você economiza:</p>
+    <ul>
+      <li><strong>R$ ${economiaAbsoluta.toFixed(2)}</strong> por dia.</li>
+      <li><strong>${economiaPercentual}%</strong> em relação à segunda opção.</li>
+    </ul>
+    <p style="color: #20c6d6; font-size: 1.2rem;">
+      Opte por <strong>${primeira.nome}</strong> e maximize sua economia!
+    </p>
+  `;
+}
+
+function renderizarGrafico(resultados) {
+  const ctx = document.getElementById("grafico-comparativo").getContext("2d");
+  const nomes = resultados.map(racao => racao.nome);
+  const custos = resultados.map(racao => racao.custoDiario);
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: nomes,
+      datasets: [{
+        label: 'Custo Diário (R$)',
+        data: custos,
+        backgroundColor: ['#20c6d6', '#92edeb', '#76d6d2', '#f9f9f9', '#f1f1f1'],
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Comparativo de Custos Diários'
+        }
+      }
+    }
+  });
+}
+document.getElementById("calcular").addEventListener("click", () => {
+  const tipoPet = document.getElementById("tipo-pet").value;
+  const peso = parseFloat(document.getElementById("peso").value);
+  const idade = document.getElementById("idade").value;
+  const atividade = parseFloat(document.getElementById("atividade").value);
+
+  if (isNaN(peso) || !tipoPet || !idade || isNaN(atividade)) {
+    alert("Por favor, preencha todos os campos.");
+    return;
+  }
+
+  const RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
+  const consumoDiarioKcal = RER * atividade;
+
+  const resultados = calcularProdutos(consumoDiarioKcal);
+  if (resultados.length === 0) {
+    alert("Nenhuma ração disponível para o tipo de pet selecionado.");
+    return;
+  }
+
+  mostrarComparativo(resultados);
+  mostrarEconomia(resultados);
+  renderizarGrafico(resultados);
+});
+  calcular();
+  const resultados = calcularProdutos(consumoDiarioKcal);
+  renderizarGrafico(resultados);
 });
