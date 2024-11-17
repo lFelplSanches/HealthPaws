@@ -1,9 +1,8 @@
-
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: #fdeae3; /* Cor de fundo */
   color: #333;
   display: flex;
   flex-direction: column;
@@ -12,8 +11,8 @@ body {
 
 h1 {
   margin: 20px 0;
-  color: #2a9d8f;
-  font-size: 2rem;
+  color: #20c6d6; /* Cor do nome do aplicativo */
+  font-size: 2.5rem;
 }
 
 .form-container {
@@ -44,8 +43,8 @@ input, select {
 }
 
 button {
-  background-color: #2a9d8f;
-  color: white;
+  background-color: #92edeb; /* Cor do botão Calcular */
+  color: #283a44; /* Cor da palavra Calcular */
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
@@ -54,7 +53,7 @@ button {
 }
 
 button:hover {
-  background-color: #21867a;
+  background-color: #76d6d2; /* Cor do botão ao passar o mouse */
 }
 
 .results-container, .historico-container {
@@ -79,7 +78,7 @@ th, td {
 }
 
 th {
-  background-color: #2a9d8f;
+  background-color: #20c6d6; /* Cabeçalho da tabela com cor da marca */
   color: white;
 }
 
