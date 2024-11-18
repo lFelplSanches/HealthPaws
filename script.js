@@ -1,4 +1,3 @@
-
 let historico = [];
 let racoes = [];
 
@@ -74,7 +73,6 @@ function calcularProdutos(consumoDiarioKcal) {
 
   const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
   const racoesFiltradas = racoes.filter(r => r.tipo === tipoPet);
-  console.log("Rações filtradas por tipo:", racoesFiltradas); // Debug
 
   return racoesFiltradas.map(r => {
     const consumoDiarioGramas = (consumoDiarioKcal / r.densidade) * 1000;
