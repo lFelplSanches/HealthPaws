@@ -205,3 +205,50 @@ input:invalid {
 input:focus:invalid {
   outline-color: red;
 }
+
+/* Estilo da tabela */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 18px;
+  text-align: left;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.styled-table thead tr {
+  background-color: #20c6d6;
+  color: #ffffff;
+  text-align: center;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr {
+  transition: background-color 0.3s;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.styled-table tbody td a {
+  text-decoration: none;
+  color: #20c6d6;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.styled-table tbody td a img {
+  width: 24px;
+  height: 24px;
+}
