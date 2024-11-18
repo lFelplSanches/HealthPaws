@@ -163,8 +163,8 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor) {
           </tr>
           <tr>
             <td>Consumo Diário (g)</td>
-            <td>${((melhor.custoDiario / (melhor.preco / melhor.pesoPacote)) * 1000).toFixed(2)}</td>
-            <td>${((segundaMelhor.custoDiario / (segundaMelhor.preco / segundaMelhor.pesoPacote)) * 1000).toFixed(2)}</td>
+            <td>${((consumoDiarioKcal / melhor.densidade) * 1000).toFixed(2)}</td>
+            <td>${((consumoDiarioKcal / segundaMelhor.densidade) * 1000).toFixed(2)}</td>
           </tr>
           <tr>
             <td>Duração Estimada (dias)</td>
