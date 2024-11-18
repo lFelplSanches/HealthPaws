@@ -6,6 +6,25 @@
   <title>HealthPaws</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .menu-lateral {
+      position: fixed;
+      top: 0;
+      left: -250px; /* Esconde o menu fora da tela */
+      width: 250px;
+      height: 100%;
+      background-color: #20c6d6; /* Cor do menu */
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+      transition: left 0.3s ease; /* Animação ao abrir */
+      z-index: 1000;
+    }
+    .menu-lateral.menu-aberto {
+      left: 0; /* Move o menu para dentro da tela */
+    }
+    #menu-toggle.hidden {
+      visibility: hidden;
+    }
+  </style>
 </head>
 <body>
   <!-- Botão do menu -->
@@ -79,7 +98,13 @@
       const button = document.getElementById("menu-toggle");
       const isOpen = menu.classList.toggle("menu-aberto");
 
-      button.style.display = isOpen ? "none" : "block"; // Oculta ou mostra o botão
+      if (isOpen) {
+        button.classList.add("hidden"); // Oculta o botão
+        setTimeout(() => button.style.visibility = "hidden", 300); // Esconde após animação
+      } else {
+        button.style.visibility = "visible"; // Mostra o botão novamente
+        button.classList.remove("hidden");
+      }
     });
   </script>
   <script src="script.js"></script>
