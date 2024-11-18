@@ -72,17 +72,23 @@ function calcularProdutos(consumoDiarioKcal) {
   tableBody.innerHTML = "";
 
   const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
+  const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
+
   const racoesFiltradas = racoes.filter(r => r.tipo === tipoPet);
 
   return racoesFiltradas.map(r => {
+    // Ajustar o preço proporcional ao peso selecionado
+    const precoPorKg = r.preco / r.pesoPacote; // Preço por kg
+    const precoAtualizado = precoPorKg * pesoPacoteSelecionado;
+
     const consumoDiarioGramas = (consumoDiarioKcal / r.densidade) * 1000;
-    const custoDiario = (consumoDiarioGramas / 1000) * (r.preco / r.pesoPacote);
-    const duracaoPacote = (r.pesoPacote * 1000) / consumoDiarioGramas;
+    const custoDiario = (consumoDiarioGramas / 1000) * precoAtualizado;
+    const duracaoPacote = (pesoPacoteSelecionado * 1000) / consumoDiarioGramas;
 
     tableBody.innerHTML += `
       <tr>
         <td>${r.nome}</td>
-        <td>R$ ${r.preco.toFixed(2)}</td>
+        <td>R$ ${precoAtualizado.toFixed(2)}</td>
         <td>${consumoDiarioGramas.toFixed(2)}</td>
         <td>R$ ${custoDiario.toFixed(2)}</td>
         <td>${Math.floor(duracaoPacote)}</td>
