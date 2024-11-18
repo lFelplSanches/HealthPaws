@@ -174,8 +174,8 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor) {
           </tr>
           <tr>
             <td>Consumo Diário (g)</td>
-            <td>${(melhor.custoDiario / melhor.custoDiario * 1000).toFixed(2)}</td>
-            <td>${(segundaMelhor.custoDiario / segundaMelhor.custoDiario * 1000).toFixed(2)}</td>
+            <td>${((melhor.custoDiario / melhor.densidade) * 1000).toFixed(2)}</td>
+            <td>${((segundaMelhor.custoDiario / segundaMelhor.densidade) * 1000).toFixed(2)}</td>
           </tr>
           <tr>
             <td>Duração Estimada (dias)</td>
@@ -187,6 +187,9 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor) {
     </div>
   `;
 }
+
+// Atualizar chamada da análise comparativa
+mostrarAnaliseComparativa(resultados[0], resultados[1]);
 
 // Chamada à função após a análise econômica
 mostrarAnaliseComparativa(melhor, segundaMelhor);
