@@ -100,10 +100,10 @@ function calcularProdutos(consumoDiarioKcal) {
   });
 }
 
-// Função para mostrar comparativo entre as rações
+// Função para mostrar comparativo geral
 function mostrarComparativo(resultados) {
-  const comparativoContainer = document.getElementById("comparativo");
-  comparativoContainer.innerHTML = "<h3>Análise Comparativa</h3>";
+  const comparativoGeralContainer = document.getElementById("comparativo-geral");
+  comparativoGeralContainer.innerHTML = "";
 
   const [melhor, segundaMelhor] = resultados;
 
@@ -117,8 +117,8 @@ function mostrarComparativo(resultados) {
     </div>
   `;
 
-  comparativoContainer.innerHTML += itemHTML(melhor, true);
-  comparativoContainer.innerHTML += itemHTML(segundaMelhor, false);
+  comparativoGeralContainer.innerHTML += itemHTML(melhor, true);
+  comparativoGeralContainer.innerHTML += itemHTML(segundaMelhor, false);
 }
 
 // Função para mostrar análise econômica
@@ -144,36 +144,33 @@ function mostrarEconomia(resultados) {
 
 // Função para mostrar análise comparativa detalhada
 function mostrarAnaliseComparativa(melhor, segundaMelhor, consumoDiarioKcal) {
-  const comparativoContainer = document.getElementById("comparativo");
-  comparativoContainer.innerHTML += `
-    <div class="comparativo-detalhado">
-      <h3>Análise Comparativa Detalhada</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Critério</th>
-            <th>${melhor.nome}</th>
-            <th>${segundaMelhor.nome}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Custo Diário (R$)</td>
-            <td>${melhor.custoDiario.toFixed(2)}</td>
-            <td>${segundaMelhor.custoDiario.toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>Consumo Diário (g)</td>
-            <td>${((consumoDiarioKcal / melhor.densidade) * 1000).toFixed(2)}</td>
-            <td>${((consumoDiarioKcal / segundaMelhor.densidade) * 1000).toFixed(2)}</td>
-          </tr>
-          <tr>
-            <td>Duração Estimada (dias)</td>
-            <td>${Math.floor(melhor.duracaoPacote)}</td>
-            <td>${Math.floor(segundaMelhor.duracaoPacote)}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  const comparativoDetalhadoContainer = document.getElementById("comparativo-detalhado");
+  comparativoDetalhadoContainer.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Critério</th>
+          <th>${melhor.nome}</th>
+          <th>${segundaMelhor.nome}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Custo Diário (R$)</td>
+          <td>${melhor.custoDiario.toFixed(2)}</td>
+          <td>${segundaMelhor.custoDiario.toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td>Consumo Diário (g)</td>
+          <td>${((consumoDiarioKcal / melhor.densidade) * 1000).toFixed(2)}</td>
+          <td>${((consumoDiarioKcal / segundaMelhor.densidade) * 1000).toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td>Duração Estimada (dias)</td>
+          <td>${Math.floor(melhor.duracaoPacote)}</td>
+          <td>${Math.floor(segundaMelhor.duracaoPacote)}</td>
+        </tr>
+      </tbody>
+    </table>
   `;
 }
