@@ -31,13 +31,6 @@ async function carregarRacoes() {
 // Inicializar ao carregar
 document.addEventListener("DOMContentLoaded", carregarRacoes);
 
-// Configurar botão do menu
-// Este código era usado para o botão do menu, agora pode ser removido
-// document.getElementById("menu-toggle").addEventListener("click", () => {
-//   const menu = document.getElementById("menu-lateral"); 
-//   menu.classList.toggle('menu-aberto');
-// });
-
 // Configurar botão calcular
 document.getElementById("calcular").addEventListener("click", () => {
   const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
