@@ -32,10 +32,11 @@ async function carregarRacoes() {
 document.addEventListener("DOMContentLoaded", carregarRacoes);
 
 // Configurar botão do menu
-document.getElementById("menu-toggle").addEventListener("click", () => {
-  const menu = document.getElementById("menu-lateral"); // Selecionar por ID
-  menu.classList.toggle('menu-aberto'); // Alternar classe para exibir o menu
-});
+// Este código era usado para o botão do menu, agora pode ser removido
+// document.getElementById("menu-toggle").addEventListener("click", () => {
+//   const menu = document.getElementById("menu-lateral"); 
+//   menu.classList.toggle('menu-aberto');
+// });
 
 // Configurar botão calcular
 document.getElementById("calcular").addEventListener("click", () => {
