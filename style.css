@@ -202,3 +202,26 @@ button#calcular:hover {
 .comparativo-detalhado tr:hover {
   background-color: #f1f1f1;
 }
+
+/* Análise Econômica */
+#economia {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+}
+
+#economia p {
+  margin: 10px 0;
+}
+
+#economia ul {
+  margin: 10px 0;
+  padding: 0 15px;
+}
+
+#economia ul li {
+  margin-bottom: 5px;
+}
