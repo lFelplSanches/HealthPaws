@@ -32,7 +32,6 @@ async function carregarRacoes() {
 document.addEventListener("DOMContentLoaded", () => {
   carregarRacoes();
 
-  // Configurar botão calcular
   const calcularButton = document.getElementById("calcular");
   if (calcularButton) {
     calcularButton.addEventListener("click", () => {
@@ -87,7 +86,15 @@ function calcularProdutos(consumoDiarioKcal) {
         <td>${consumoDiarioGramas.toFixed(2)}</td>
         <td>R$ ${custoDiario.toFixed(2)}</td>
         <td>${Math.floor(duracaoPacote)}</td>
-        <td>${r.compra ? `<a href="${r.compra}" target="_blank" rel="noopener noreferrer">Comprar</a>` : 'N/A'}</td>
+        <td>
+          ${
+            r.compra
+              ? `<a href="${r.compra}" target="_blank" rel="noopener noreferrer">
+                  <img src="https://img.icons8.com/material-rounded/24/000000/shopping-cart.png" alt="Comprar">
+                </a>`
+              : "N/A"
+          }
+        </td>
       </tr>`;
     return { nome: r.nome, custoDiario, duracaoPacote, densidade: r.densidade };
   });
