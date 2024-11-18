@@ -55,10 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
-      mostrarComparativo(resultadosOrdenados);
-      mostrarEconomia(resultadosOrdenados);
-      mostrarAnaliseComparativa(resultadosOrdenados[0], resultadosOrdenados[1], consumoDiarioKcal);
+      const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
+      mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
       document.getElementById("results").style.display = "block";
     });
   } else {
@@ -77,8 +75,7 @@ function calcularProdutos(consumoDiarioKcal) {
   const racoesFiltradas = racoes.filter(r => r.tipo === tipoPet);
 
   return racoesFiltradas.map(r => {
-    // Ajustar o preço proporcional ao peso selecionado
-    const precoPorKg = r.preco / r.pesoPacote; // Preço por kg
+    const precoPorKg = r.preco / r.pesoPacote;
     const precoAtualizado = precoPorKg * pesoPacoteSelecionado;
 
     const consumoDiarioGramas = (consumoDiarioKcal / r.densidade) * 1000;
@@ -102,81 +99,41 @@ function calcularProdutos(consumoDiarioKcal) {
           }
         </td>
       </tr>`;
-    return { nome: r.nome, custoDiario, duracaoPacote, densidade: r.densidade };
+    return { ...r, custoDiario, duracaoPacote };
   });
 }
 
-// Função para mostrar comparativo geral
-function mostrarComparativo(resultados) {
-  const comparativoGeralContainer = document.getElementById("comparativo-geral");
-  comparativoGeralContainer.innerHTML = "";
+// Encontrar as melhores rações
+function encontrarMelhoresRacoes(resultados) {
+  const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
 
-  const [melhor, segundaMelhor] = resultados;
+  const racaoMaisEconomica = resultadosOrdenados[0];
 
-  const itemHTML = (racao, isMelhor) => `
-    <div class="comparativo-item">
-      <div class="nome" style="color: ${isMelhor ? '#20c6d6' : '#555'};">
-        ${isMelhor ? '🌟 ' : ''}${racao.nome}
-      </div>
-      <div class="custo">Custo Diário: <strong>R$ ${racao.custoDiario.toFixed(2)}</strong></div>
-      <div class="duracao">Duração: <strong>${Math.floor(racao.duracaoPacote)} dias</strong></div>
-    </div>
-  `;
+  const categoriasOrdenadas = ["super premium", "premium", "standard"];
+  const racaoMelhorQualidade = resultadosOrdenados.find(r =>
+    categoriasOrdenadas.indexOf(r.categoria.toLowerCase()) >= 0
+  );
 
-  comparativoGeralContainer.innerHTML += itemHTML(melhor, true);
-  comparativoGeralContainer.innerHTML += itemHTML(segundaMelhor, false);
+  return { racaoMaisEconomica, racaoMelhorQualidade };
 }
 
-// Função para mostrar análise econômica
-function mostrarEconomia(resultados) {
-  const economiaContainer = document.getElementById("economia");
-  economiaContainer.innerHTML = "<h3>Análise de Economia</h3>";
+// Mostrar as melhores rações
+function mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade) {
+  const melhorEconomicaContainer = document.getElementById("melhor-economica");
+  const melhorQualidadeContainer = document.getElementById("melhor-qualidade");
 
-  const [melhor, segundaMelhor] = resultados;
-  const economiaAbsoluta = segundaMelhor.custoDiario - melhor.custoDiario;
-  const economiaPercentual = ((economiaAbsoluta / segundaMelhor.custoDiario) * 100).toFixed(2);
-
-  economiaContainer.innerHTML += `
-    <p>Escolhendo a ração <strong>${melhor.nome}</strong>, você economiza:</p>
-    <ul>
-      <li><strong>R$ ${economiaAbsoluta.toFixed(2)}</strong> por dia.</li>
-      <li><strong>${economiaPercentual}%</strong> em relação à segunda opção mais econômica.</li>
-    </ul>
-    <p style="color: #20c6d6; font-size: 1.2rem;">
-      <strong>${melhor.nome}</strong> é a escolha mais econômica!
-    </p>
+  melhorEconomicaContainer.innerHTML = `
+    <h3>Ração Mais Econômica</h3>
+    <p><strong>${racaoMaisEconomica.nome}</strong></p>
+    <p>Custo Diário: R$ ${racaoMaisEconomica.custoDiario.toFixed(2)}</p>
+    <p>Duração: ${Math.floor(racaoMaisEconomica.duracaoPacote)} dias</p>
   `;
-}
 
-// Função para mostrar análise comparativa detalhada
-function mostrarAnaliseComparativa(melhor, segundaMelhor, consumoDiarioKcal) {
-  const comparativoDetalhadoContainer = document.getElementById("comparativo-detalhado");
-  comparativoDetalhadoContainer.innerHTML = `
-    <table>
-      <thead>
-        <tr>
-          <th>Critério</th>
-          <th>${melhor.nome}</th>
-          <th>${segundaMelhor.nome}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Custo Diário (R$)</td>
-          <td>${melhor.custoDiario.toFixed(2)}</td>
-          <td>${segundaMelhor.custoDiario.toFixed(2)}</td>
-        </tr>
-        <tr>
-          <td>Consumo Diário (g)</td>
-          <td>${((consumoDiarioKcal / melhor.densidade) * 1000).toFixed(2)}</td>
-          <td>${((consumoDiarioKcal / segundaMelhor.densidade) * 1000).toFixed(2)}</td>
-        </tr>
-        <tr>
-          <td>Duração Estimada (dias)</td>
-          <td>${Math.floor(melhor.duracaoPacote)}</td>
-          <td>${Math.floor(segundaMelhor.duracaoPacote)}</td>
-        </tr>
-      </tbody>
-    </table>
+  melhorQualidadeContainer.innerHTML = `
+    <h3>Melhor Qualidade e Econômica</h3>
+    <p><strong>${racaoMelhorQualidade.nome}</strong></p>
+    <p>Custo Diário: R$ ${racaoMelhorQualidade.custoDiario.toFixed(2)}</p>
+    <p>Categoria: ${racaoMelhorQualidade.categoria}</p>
+    <p>Duração: ${Math.floor(racaoMelhorQualidade.duracaoPacote)} dias</p>
   `;
 }
