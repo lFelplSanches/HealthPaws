@@ -67,7 +67,12 @@ document.getElementById("calcular").addEventListener("click", () => {
 
   mostrarComparativo(resultados);
   mostrarEconomia(resultados);
-  mostrarAnaliseComparativa(resultados[0], resultados[1]);
+  
+const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+if (resultadosOrdenados.length > 1) {
+  mostrarAnaliseComparativa(resultadosOrdenados[0], resultadosOrdenados[1]);
+}
+
   document.getElementById("results").style.display = "block";
 });
 
@@ -189,7 +194,12 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor) {
 }
 
 // Atualizar chamada da análise comparativa
-mostrarAnaliseComparativa(resultados[0], resultados[1]);
+
+const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+if (resultadosOrdenados.length > 1) {
+  mostrarAnaliseComparativa(resultadosOrdenados[0], resultadosOrdenados[1]);
+}
+
 
 // Chamada à função após a análise econômica
 mostrarAnaliseComparativa(melhor, segundaMelhor);
