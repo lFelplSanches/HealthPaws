@@ -13,7 +13,7 @@ body {
   left: 0;
   width: 250px;
   height: 100%;
-  background-color: #20c6d6; /* Cor do menu */
+  background-color: #20c6d6;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   color: #fff;
@@ -26,7 +26,7 @@ body {
   font-weight: bold;
   color: #ffffff;
   text-align: center;
-  margin: 20px 0; /* Espaçamento ao redor */
+  margin: 20px 0;
 }
 
 .menu-lateral ul {
@@ -53,7 +53,7 @@ body {
 
 /* Conteúdo principal */
 .content {
-  margin-left: 250px; /* Espaço igual à largura do menu */
+  margin-left: 250px;
   padding: 20px;
 }
 
@@ -145,15 +145,6 @@ button#calcular:hover {
   border: 1px solid #cccccc;
   border-radius: 5px;
   font-size: 16px;
-}
-
-/* Cartões para análises */
-.analysis-card {
-  background-color: #ffffff;
-  margin: 20px 0;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Comparativo Geral */
