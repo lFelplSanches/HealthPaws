@@ -22,7 +22,8 @@
       left: 0; /* Move o menu para dentro da tela */
     }
     #menu-toggle.hidden {
-      visibility: hidden;
+      opacity: 0; /* Faz o botão desaparecer visualmente */
+      transition: opacity 0.3s ease; /* Animação ao esconder o botão */
     }
   </style>
 </head>
@@ -92,18 +93,18 @@
   <div id="comparativo" class="comparativo-container" style="margin-top: 20px;"></div>
   
   <script>
-    // Função para abrir/fechar o menu e ocultar/mostrar o botão
+    // Função para alternar o menu lateral e o botão
     document.getElementById("menu-toggle").addEventListener("click", () => {
       const menu = document.querySelector(".menu-lateral");
       const button = document.getElementById("menu-toggle");
       const isOpen = menu.classList.toggle("menu-aberto");
 
       if (isOpen) {
-        button.classList.add("hidden"); // Oculta o botão
-        setTimeout(() => button.style.visibility = "hidden", 300); // Esconde após animação
+        button.classList.add("hidden"); // Ocultar botão com animação
+        setTimeout(() => button.style.visibility = "hidden", 300); // Remover visibilidade após animação
       } else {
-        button.style.visibility = "visible"; // Mostra o botão novamente
-        button.classList.remove("hidden");
+        button.style.visibility = "visible"; // Tornar o botão visível
+        setTimeout(() => button.classList.remove("hidden"), 10); // Mostrar com animação
       }
     });
   </script>
