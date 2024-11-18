@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", carregarRacoes);
 // Configurar botão do menu
 document.getElementById("menu-toggle").addEventListener("click", () => {
   const menu = document.querySelector(".menu-lateral");
-  menu.style.left = menu.style.left === "0px" ? "-250px" : "0";
+  menu.classList.toggle('menu-aberto');
 });
 
 // Configurar botão calcular
@@ -133,3 +133,12 @@ function mostrarEconomia(resultados) {
 // Registrar funções no escopo global
 window.mostrarComparativo = mostrarComparativo;
 window.mostrarEconomia = mostrarEconomia;
+
+// Validar entradas de peso e densidade
+document.getElementById("peso").addEventListener("input", (event) => {
+  const peso = parseFloat(event.target.value);
+  if (peso <= 0 || isNaN(peso)) {
+    alert("Peso deve ser maior que 0.");
+    event.target.value = "";
+  }
+});
