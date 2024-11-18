@@ -190,3 +190,21 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor) {
 
 // Chamada à função após a análise econômica
 mostrarAnaliseComparativa(melhor, segundaMelhor);
+
+// Função para gerar PDF
+function baixarPDF() {
+  const resultsContainer = document.getElementById("results");
+  const pdfContent = resultsContainer.innerHTML;
+
+  const doc = new jsPDF();
+  doc.html(pdfContent, {
+    callback: function (doc) {
+      doc.save("resultado.pdf");
+    },
+    x: 10,
+    y: 10,
+  });
+}
+
+// Adicionar evento ao botão de baixar
+document.getElementById("baixar-pdf").addEventListener("click", baixarPDF);
