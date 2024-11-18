@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", carregarRacoes);
 
 // Configurar botão do menu
 document.getElementById("menu-toggle").addEventListener("click", () => {
-  const menu = document.querySelector(".menu-lateral");
+  const menu = document.getElementById("menu-lateral"); // Selecionar por ID
   menu.classList.toggle('menu-aberto');
 });
 
