@@ -40,8 +40,6 @@ document.getElementById("menu-toggle").addEventListener("click", () => {
 
 // Configurar botão calcular
 document.getElementById("calcular").addEventListener("click", () => {
-  console.log("Rações disponíveis:", racoes); // Debug
-
   const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
   const peso = parseFloat(document.getElementById("peso").value);
   const idade = document.getElementById("idade").value;
@@ -52,14 +50,10 @@ document.getElementById("calcular").addEventListener("click", () => {
     return;
   }
 
-  console.log("Critérios do cálculo:", { tipoPet, peso, idade, atividade });
-
   const RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
   const consumoDiarioKcal = RER * atividade;
-  console.log("Consumo Diário (kcal):", consumoDiarioKcal);
 
   const resultados = calcularProdutos(consumoDiarioKcal);
-  console.log("Resultados filtrados:", resultados);
 
   if (resultados.length === 0) {
     alert("Nenhuma ração disponível.");
@@ -69,7 +63,7 @@ document.getElementById("calcular").addEventListener("click", () => {
   const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
   mostrarComparativo(resultadosOrdenados);
   mostrarEconomia(resultadosOrdenados);
-  mostrarAnaliseComparativa(resultadosOrdenados[0], resultadosOrdenados[1]);
+  mostrarAnaliseComparativa(resultadosOrdenados[0], resultadosOrdenados[1], consumoDiarioKcal);
   document.getElementById("results").style.display = "block";
 });
 
@@ -177,32 +171,3 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor, consumoDiarioKcal) {
     </div>
   `;
 }
-
-// Ajustar chamada da função no botão "Calcular"
-document.getElementById("calcular").addEventListener("click", () => {
-  const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
-  const peso = parseFloat(document.getElementById("peso").value);
-  const idade = document.getElementById("idade").value;
-  const atividade = parseFloat(document.getElementById("atividade").value);
-
-  if (!tipoPet || isNaN(peso) || !idade || isNaN(atividade)) {
-    alert("Preencha todos os campos corretamente.");
-    return;
-  }
-
-  const RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
-  const consumoDiarioKcal = RER * atividade;
-
-  const resultados = calcularProdutos(consumoDiarioKcal);
-
-  if (resultados.length === 0) {
-    alert("Nenhuma ração disponível.");
-    return;
-  }
-
-  const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
-  mostrarComparativo(resultadosOrdenados);
-  mostrarEconomia(resultadosOrdenados);
-  mostrarAnaliseComparativa(resultadosOrdenados[0], resultadosOrdenados[1], consumoDiarioKcal);
-  document.getElementById("results").style.display = "block";
-});
