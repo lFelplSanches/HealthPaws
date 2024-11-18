@@ -136,3 +136,77 @@ button#calcular:hover {
   border: 1px solid #cccccc;
   border-radius: 5px;
 }
+
+/* Cartões para análises */
+.analysis-card {
+  background-color: #ffffff;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos das análises */
+.analysis-title {
+  margin-bottom: 15px;
+  font-size: 24px;
+  color: #20c6d6;
+  border-bottom: 2px solid #20c6d6;
+  padding-bottom: 5px;
+}
+
+/* Tabela detalhada */
+.comparativo-detalhado table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.comparativo-detalhado th, 
+.comparativo-detalhado td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.comparativo-detalhado th {
+  background-color: #20c6d6;
+  color: #ffffff;
+}
+
+.comparativo-detalhado tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.comparativo-detalhado tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Geral Comparativo */
+.comparativo-geral {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.comparativo-item {
+  flex: 1;
+  text-align: center;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.comparativo-item .nome {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.comparativo-item .custo, 
+.comparativo-item .duracao {
+  font-size: 16px;
+  color: #333;
+}
