@@ -204,20 +204,26 @@ if (resultadosOrdenados.length > 1) {
 // Chamada à função após a análise econômica
 mostrarAnaliseComparativa(melhor, segundaMelhor);
 
-// Função para gerar PDF
-function baixarPDF() {
+// Função para gerar e baixar o PDF dos resultados
+async function baixarPDF() {
+  const { jsPDF } = window.jspdf;
+
   const resultsContainer = document.getElementById("results");
-  const pdfContent = resultsContainer.innerHTML;
+  if (!resultsContainer || resultsContainer.style.display === "none") {
+    alert("Por favor, realize um cálculo antes de baixar o PDF.");
+    return;
+  }
 
   const doc = new jsPDF();
-  doc.html(pdfContent, {
+  await doc.html(resultsContainer, {
     callback: function (doc) {
       doc.save("resultado.pdf");
     },
     x: 10,
     y: 10,
+    width: 190 // Ajustar largura para caber no PDF
   });
 }
 
-// Adicionar evento ao botão de baixar
+// Vincular evento ao botão "baixar-pdf"
 document.getElementById("baixar-pdf").addEventListener("click", baixarPDF);
