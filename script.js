@@ -1,3 +1,4 @@
+
 let historico = [];
 let racoes = [];
 
@@ -65,9 +66,10 @@ document.getElementById("calcular").addEventListener("click", () => {
     return;
   }
 
-  mostrarComparativo(resultados);
-  mostrarEconomia(resultados);
-  mostrarAnaliseComparativa(resultados[0], resultados[1]);
+  const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+  mostrarComparativo(resultadosOrdenados);
+  mostrarEconomia(resultadosOrdenados);
+  mostrarAnaliseComparativa(resultadosOrdenados[0], resultadosOrdenados[1]);
   document.getElementById("results").style.display = "block";
 });
 
@@ -94,7 +96,7 @@ function calcularProdutos(consumoDiarioKcal) {
         <td>${Math.floor(duracaoPacote)}</td>
         <td>${r.compra ? `<a href="${r.compra}" target="_blank" rel="noopener noreferrer">Comprar</a>` : 'N/A'}</td>
       </tr>`;
-    return { nome: r.nome, custoDiario, duracaoPacote };
+    return { nome: r.nome, custoDiario, duracaoPacote, densidade: r.densidade };
   });
 }
 
@@ -103,7 +105,7 @@ function mostrarComparativo(resultados) {
   const comparativoContainer = document.getElementById("comparativo");
   comparativoContainer.innerHTML = "<h3>Análise Comparativa</h3>";
 
-  const [melhor, segundaMelhor] = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+  const [melhor, segundaMelhor] = resultados;
 
   const itemHTML = (racao, isMelhor) => `
     <div class="comparativo-item">
@@ -124,7 +126,7 @@ function mostrarEconomia(resultados) {
   const economiaContainer = document.getElementById("economia");
   economiaContainer.innerHTML = "<h3>Análise de Economia</h3>";
 
-  const [melhor, segundaMelhor] = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+  const [melhor, segundaMelhor] = resultados;
   const economiaAbsoluta = segundaMelhor.custoDiario - melhor.custoDiario;
   const economiaPercentual = ((economiaAbsoluta / segundaMelhor.custoDiario) * 100).toFixed(2);
 
@@ -139,19 +141,6 @@ function mostrarEconomia(resultados) {
     </p>
   `;
 }
-
-// Registrar funções no escopo global
-window.mostrarComparativo = mostrarComparativo;
-window.mostrarEconomia = mostrarEconomia;
-
-// Validar entradas de peso e densidade
-document.getElementById("peso").addEventListener("input", (event) => {
-  const peso = parseFloat(event.target.value);
-  if (peso <= 0 || isNaN(peso)) {
-    alert("Peso deve ser maior que 0.");
-    event.target.value = "";
-  }
-});
 
 function mostrarAnaliseComparativa(melhor, segundaMelhor) {
   const comparativoContainer = document.getElementById("comparativo");
@@ -174,8 +163,8 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor) {
           </tr>
           <tr>
             <td>Consumo Diário (g)</td>
-            <td>${(melhor.custoDiario / melhor.custoDiario * 1000).toFixed(2)}</td>
-            <td>${(segundaMelhor.custoDiario / segundaMelhor.custoDiario * 1000).toFixed(2)}</td>
+            <td>${(melhor.densidade).toFixed(2)}</td>
+            <td>${(segundaMelhor.densidade).toFixed(2)}</td>
           </tr>
           <tr>
             <td>Duração Estimada (dias)</td>
@@ -187,6 +176,3 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor) {
     </div>
   `;
 }
-
-// Chamada à função após a análise econômica
-mostrarAnaliseComparativa(melhor, segundaMelhor);
