@@ -101,7 +101,7 @@ th {
   z-index: 1000;
 }
 
-.menu-lateral:hover {
+.menu-lateral.menu-aberto {
   left: 0; /* Move o menu para dentro da tela */
 }
 
@@ -196,4 +196,12 @@ td.important {
 .comparativo-item .custo, .comparativo-item .duracao {
   font-size: 1rem;
   color: #555;
+}
+
+input:invalid {
+  border: 1px solid red;
+}
+
+input:focus:invalid {
+  outline-color: red;
 }
