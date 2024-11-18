@@ -20,6 +20,15 @@ body {
   padding-top: 20px;
 }
 
+/* Título do aplicativo no menu */
+.app-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  margin: 20px 0; /* Espaçamento ao redor */
+}
+
 .menu-lateral ul {
   list-style: none;
   padding: 0;
