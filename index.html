@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -70,15 +69,19 @@
     <div id="economia" style="margin-top: 20px;"></div>
   </div>
 
-  <div class="historico-container" id="historico-container" style="display: none;">
-    <h2>Histórico de Consultas</h2>
-    <button onclick="limparHistorico()">Limpar Histórico</button>
-    <div id="historico"></div>
-  </div>
-
   <canvas id="grafico-comparativo" style="margin-top: 20px; max-width: 600px;"></canvas>
   <div id="comparativo" class="comparativo-container" style="margin-top: 20px;"></div>
   
+  <script>
+    // Função para abrir/fechar o menu e ocultar/mostrar o botão
+    document.getElementById("menu-toggle").addEventListener("click", () => {
+      const menu = document.querySelector(".menu-lateral");
+      const button = document.getElementById("menu-toggle");
+      const isOpen = menu.classList.toggle("menu-aberto");
+
+      button.style.display = isOpen ? "none" : "block"; // Oculta ou mostra o botão
+    });
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
