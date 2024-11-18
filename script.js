@@ -55,7 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
+
+      mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
       mostrarEconomia(resultados);
+      mostrarAnaliseEconomicaDetalhada(racaoMaisEconomica, racaoMelhorQualidade, consumoDiarioKcal);
+
       document.getElementById("results").style.display = "block";
     });
   } else {
@@ -100,6 +105,55 @@ function calcularProdutos(consumoDiarioKcal) {
       </tr>`;
     return { ...r, custoDiario, duracaoPacote };
   });
+}
+
+// Encontrar as melhores rações
+function encontrarMelhoresRacoes(resultados) {
+  const categoriasOrdenadas = ["super premium", "premium", "standard"];
+  
+  const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+
+  const racaoMaisEconomica = resultadosOrdenados[0];
+
+  const racaoMelhorQualidade = resultadosOrdenados.find(r =>
+    categoriasOrdenadas.indexOf(r.categoria.toLowerCase()) >= 0
+  );
+
+  return { racaoMaisEconomica, racaoMelhorQualidade };
+}
+
+// Mostrar análise detalhada
+function mostrarAnaliseEconomicaDetalhada(melhor, segundaMelhor, consumoDiarioKcal) {
+  const comparativoDetalhadoContainer = document.getElementById("comparativo-detalhado");
+  comparativoDetalhadoContainer.innerHTML = `
+    <h3>Análise Econômica Detalhada</h3>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Critério</th>
+          <th>${melhor.nome}</th>
+          <th>${segundaMelhor.nome}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Custo Diário (R$)</td>
+          <td>${melhor.custoDiario.toFixed(2)}</td>
+          <td>${segundaMelhor.custoDiario.toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td>Consumo Diário (g)</td>
+          <td>${((consumoDiarioKcal / melhor.densidade) * 1000).toFixed(2)}</td>
+          <td>${((consumoDiarioKcal / segundaMelhor.densidade) * 1000).toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td>Duração Estimada (dias)</td>
+          <td>${Math.floor(melhor.duracaoPacote)}</td>
+          <td>${Math.floor(segundaMelhor.duracaoPacote)}</td>
+        </tr>
+      </tbody>
+    </table>
+  `;
 }
 
 // Reimplementar análises econômicas
