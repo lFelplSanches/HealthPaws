@@ -6,25 +6,6 @@
   <title>HealthPaws</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    /* Menu lateral fixo */
-    .menu-lateral {
-      position: fixed;
-      top: 0;
-      left: 0; /* Menu visível na posição inicial */
-      width: 250px;
-      height: 100%;
-      background-color: #20c6d6; /* Cor do menu */
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-    }
-
-    /* Conteúdo principal ajustado para dar espaço ao menu */
-    .content {
-      margin-left: 250px; /* Espaço igual à largura do menu */
-      padding: 20px;
-    }
-  </style>
 </head>
 <body>
   <!-- Menu Lateral -->
@@ -68,29 +49,26 @@
       </div>
       <button id="calcular">Calcular</button>
     </div>
+
+    <div class="results-container" id="results" style="display: none;">
+      <h2>Resultados</h2>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Nome da Ração</th>
+            <th>Preço Total</th>
+            <th>Consumo Diário (g)</th>
+            <th>Custo Diário</th>
+            <th>Duração Estimada (dias)</th>
+            <th>Link para Compra</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div id="economia" style="margin-top: 20px;"></div>
+    </div>
   </div>
 
-  <div class="results-container" id="results" style="display: none;">
-    <h2>Resultados</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Nome da Ração</th>
-          <th>Preço Total</th>
-          <th>Consumo Diário (g)</th>
-          <th>Custo Diário</th>
-          <th>Duração Estimada (dias)</th>
-          <th>Link para Compra</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-    <div id="economia" style="margin-top: 20px;"></div>
-  </div>
-
-  <canvas id="grafico-comparativo" style="margin-top: 20px; max-width: 600px;"></canvas>
-  <div id="comparativo" class="comparativo-container" style="margin-top: 20px;"></div>
-  
   <script src="script.js"></script>
 </body>
 </html>
