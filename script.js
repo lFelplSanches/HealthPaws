@@ -66,6 +66,7 @@ document.getElementById("calcular").addEventListener("click", () => {
 
   mostrarComparativo(resultados);
   mostrarEconomia(resultados);
+  mostrarAnaliseComparativa(resultados[0], resultados[1]);
   document.getElementById("results").style.display = "block";
 });
 
@@ -142,3 +143,41 @@ document.getElementById("peso").addEventListener("input", (event) => {
     event.target.value = "";
   }
 });
+
+function mostrarAnaliseComparativa(melhor, segundaMelhor) {
+  const comparativoContainer = document.getElementById("comparativo");
+  comparativoContainer.innerHTML += `
+    <div class="comparativo-detalhado">
+      <h3>Análise Comparativa Detalhada</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Critério</th>
+            <th>${melhor.nome}</th>
+            <th>${segundaMelhor.nome}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Custo Diário (R$)</td>
+            <td>${melhor.custoDiario.toFixed(2)}</td>
+            <td>${segundaMelhor.custoDiario.toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>Consumo Diário (g)</td>
+            <td>${(melhor.custoDiario / melhor.custoDiario * 1000).toFixed(2)}</td>
+            <td>${(segundaMelhor.custoDiario / segundaMelhor.custoDiario * 1000).toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>Duração Estimada (dias)</td>
+            <td>${Math.floor(melhor.duracaoPacote)}</td>
+            <td>${Math.floor(segundaMelhor.duracaoPacote)}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+// Chamada à função após a análise econômica
+mostrarAnaliseComparativa(melhor, segundaMelhor);
