@@ -55,8 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
-      mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
+      mostrarEconomia(resultados);
       document.getElementById("results").style.display = "block";
     });
   } else {
@@ -79,16 +78,16 @@ function calcularProdutos(consumoDiarioKcal) {
     const precoAtualizado = precoPorKg * pesoPacoteSelecionado;
 
     const consumoDiarioGramas = (consumoDiarioKcal / r.densidade) * 1000;
-    const custoDiario = (consumoDiarioGramas / 1000) * precoAtualizado;
+    const custoDiario = (consumoDiarioGramas / 1000) * precoPorKg;
     const duracaoPacote = (pesoPacoteSelecionado * 1000) / consumoDiarioGramas;
 
     tableBody.innerHTML += `
       <tr>
         <td>${r.nome}</td>
         <td>R$ ${precoAtualizado.toFixed(2)}</td>
-        <td>${consumoDiarioGramas.toFixed(2)}</td>
+        <td>${consumoDiarioGramas.toFixed(2)} g</td>
         <td>R$ ${custoDiario.toFixed(2)}</td>
-        <td>${Math.floor(duracaoPacote)}</td>
+        <td>${Math.floor(duracaoPacote)} dias</td>
         <td>
           ${
             r.compra
@@ -103,37 +102,23 @@ function calcularProdutos(consumoDiarioKcal) {
   });
 }
 
-// Encontrar as melhores rações
-function encontrarMelhoresRacoes(resultados) {
-  const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+// Reimplementar análises econômicas
+function mostrarEconomia(resultados) {
+  const economiaContainer = document.getElementById("economia");
+  economiaContainer.innerHTML = "<h3>Análise de Economia</h3>";
 
-  const racaoMaisEconomica = resultadosOrdenados[0];
+  const [melhor, segundaMelhor] = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+  const economiaAbsoluta = segundaMelhor.custoDiario - melhor.custoDiario;
+  const economiaPercentual = ((economiaAbsoluta / segundaMelhor.custoDiario) * 100).toFixed(2);
 
-  const categoriasOrdenadas = ["super premium", "premium", "standard"];
-  const racaoMelhorQualidade = resultadosOrdenados.find(r =>
-    categoriasOrdenadas.indexOf(r.categoria.toLowerCase()) >= 0
-  );
-
-  return { racaoMaisEconomica, racaoMelhorQualidade };
-}
-
-// Mostrar as melhores rações
-function mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade) {
-  const melhorEconomicaContainer = document.getElementById("melhor-economica");
-  const melhorQualidadeContainer = document.getElementById("melhor-qualidade");
-
-  melhorEconomicaContainer.innerHTML = `
-    <h3>Ração Mais Econômica</h3>
-    <p><strong>${racaoMaisEconomica.nome}</strong></p>
-    <p>Custo Diário: R$ ${racaoMaisEconomica.custoDiario.toFixed(2)}</p>
-    <p>Duração: ${Math.floor(racaoMaisEconomica.duracaoPacote)} dias</p>
-  `;
-
-  melhorQualidadeContainer.innerHTML = `
-    <h3>Melhor Qualidade e Econômica</h3>
-    <p><strong>${racaoMelhorQualidade.nome}</strong></p>
-    <p>Custo Diário: R$ ${racaoMelhorQualidade.custoDiario.toFixed(2)}</p>
-    <p>Categoria: ${racaoMelhorQualidade.categoria}</p>
-    <p>Duração: ${Math.floor(racaoMelhorQualidade.duracaoPacote)} dias</p>
+  economiaContainer.innerHTML += `
+    <p>Escolhendo a ração <strong>${melhor.nome}</strong>, você economiza:</p>
+    <ul>
+      <li><strong>R$ ${economiaAbsoluta.toFixed(2)}</strong> por dia.</li>
+      <li><strong>${economiaPercentual}%</strong> em relação à segunda opção mais econômica.</li>
+    </ul>
+    <p style="color: #20c6d6; font-size: 1.2rem;">
+      <strong>${melhor.nome}</strong> é a escolha mais econômica!
+    </p>
   `;
 }
