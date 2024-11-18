@@ -67,12 +67,7 @@ document.getElementById("calcular").addEventListener("click", () => {
 
   mostrarComparativo(resultados);
   mostrarEconomia(resultados);
-  
-const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
-if (resultadosOrdenados.length > 1) {
-  mostrarAnaliseComparativa(resultadosOrdenados[0], resultadosOrdenados[1]);
-}
-
+  mostrarAnaliseComparativa(resultados[0], resultados[1]);
   document.getElementById("results").style.display = "block";
 });
 
@@ -179,8 +174,8 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor) {
           </tr>
           <tr>
             <td>Consumo Diário (g)</td>
-            <td>${((melhor.custoDiario / melhor.densidade) * 1000).toFixed(2)}</td>
-            <td>${((segundaMelhor.custoDiario / segundaMelhor.densidade) * 1000).toFixed(2)}</td>
+            <td>${(melhor.custoDiario / melhor.custoDiario * 1000).toFixed(2)}</td>
+            <td>${(segundaMelhor.custoDiario / segundaMelhor.custoDiario * 1000).toFixed(2)}</td>
           </tr>
           <tr>
             <td>Duração Estimada (dias)</td>
@@ -193,37 +188,5 @@ function mostrarAnaliseComparativa(melhor, segundaMelhor) {
   `;
 }
 
-// Atualizar chamada da análise comparativa
-
-const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
-if (resultadosOrdenados.length > 1) {
-  mostrarAnaliseComparativa(resultadosOrdenados[0], resultadosOrdenados[1]);
-}
-
-
 // Chamada à função após a análise econômica
 mostrarAnaliseComparativa(melhor, segundaMelhor);
-
-// Função para gerar e baixar o PDF dos resultados
-async function baixarPDF() {
-  const { jsPDF } = window.jspdf;
-
-  const resultsContainer = document.getElementById("results");
-  if (!resultsContainer || resultsContainer.style.display === "none") {
-    alert("Por favor, realize um cálculo antes de baixar o PDF.");
-    return;
-  }
-
-  const doc = new jsPDF();
-  await doc.html(resultsContainer, {
-    callback: function (doc) {
-      doc.save("resultado.pdf");
-    },
-    x: 10,
-    y: 10,
-    width: 190 // Ajustar largura para caber no PDF
-  });
-}
-
-// Vincular evento ao botão "baixar-pdf"
-document.getElementById("baixar-pdf").addEventListener("click", baixarPDF);
