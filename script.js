@@ -11,14 +11,15 @@ async function carregarRacoes() {
     racoes = linhas
       .filter(l => l.trim() !== "") // Ignorar linhas vazias
       .map(l => {
-        const [nome, preco, densidade, pesoPacote, tipo, categoria] = l.split(',');
+        const [nome, preco, densidade, pesoPacote, tipo, categoria, compra] = l.split(',');
         return {
           nome: nome.trim(),
           preco: parseFloat(preco),
           densidade: parseFloat(densidade),
           pesoPacote: parseFloat(pesoPacote),
           tipo: tipo.trim().toLowerCase(),
-          categoria: categoria ? categoria.trim().toLowerCase() : "standard"
+          categoria: categoria ? categoria.trim().toLowerCase() : "standard",
+          compra: compra ? compra.trim() : null
         };
       });
     console.log("Rações carregadas:", racoes);
@@ -84,7 +85,15 @@ function calcularProdutos(consumoDiarioKcal) {
     const custoDiario = (consumoDiarioGramas / 1000) * (r.preco / r.pesoPacote);
     const duracaoPacote = (r.pesoPacote * 1000) / consumoDiarioGramas;
 
-    tableBody.innerHTML += `<tr><td>${r.nome}</td><td>R$ ${r.preco.toFixed(2)}</td><td>${consumoDiarioGramas.toFixed(2)}</td><td>R$ ${custoDiario.toFixed(2)}</td><td>${Math.floor(duracaoPacote)}</td></tr>`;
+    tableBody.innerHTML += `
+      <tr>
+        <td>${r.nome}</td>
+        <td>R$ ${r.preco.toFixed(2)}</td>
+        <td>${consumoDiarioGramas.toFixed(2)}</td>
+        <td>R$ ${custoDiario.toFixed(2)}</td>
+        <td>${Math.floor(duracaoPacote)}</td>
+        <td>${r.compra ? `<a href="${r.compra}" target="_blank" rel="noopener noreferrer">Comprar</a>` : 'N/A'}</td>
+      </tr>`;
     return { nome: r.nome, custoDiario, duracaoPacote };
   });
 }
