@@ -1,3 +1,4 @@
+
 let historico = [];
 let racoes = [];
 
@@ -5,6 +6,9 @@ let racoes = [];
 async function carregarRacoes() {
   try {
     const response = await fetch('./racoes.csv'); // Carregar arquivo CSV local
+    if (!response.ok) {
+      throw new Error("Erro ao carregar o arquivo CSV");
+    }
     const data = await response.text();
     const linhas = data.split('\n').slice(1); // Ignorar o cabeçalho
     racoes = linhas
@@ -24,6 +28,7 @@ async function carregarRacoes() {
     console.log("Rações carregadas:", racoes); // Log para depuração
   } catch (error) {
     console.error("Erro ao carregar as rações:", error);
+    alert("Erro ao carregar os dados das rações. Verifique o arquivo e tente novamente.");
   }
 }
 
@@ -49,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultados = calcularProdutos(consumoDiarioKcal);
 
     if (resultados.length === 0) {
-      alert("Nenhuma ração disponível.");
+      alert("Nenhuma ração disponível para o tipo de pet selecionado.");
       return;
     }
 
