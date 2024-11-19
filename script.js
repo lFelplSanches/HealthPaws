@@ -1,11 +1,11 @@
+
 let historico = [];
 let racoes = [];
 
 // Função para carregar os dados das rações
 async function carregarRacoes() {
   try {
-    const url = 'https://raw.githubusercontent.com/lFelplSanches/HealthPaws/main/racoes.csv';
-    const response = await fetch(url);
+    const response = await fetch('./racoes.csv');
     const data = await response.text();
     const linhas = data.split('\n').slice(1); // Ignorar o cabeçalho
     racoes = linhas
