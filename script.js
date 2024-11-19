@@ -110,13 +110,16 @@ function calcularProdutos(consumoDiarioKcal) {
 function encontrarMelhoresRacoes(resultados) {
   const categoriasOrdenadas = ["super premium", "premium", "standard"];
 
+  // Ordenar por custo diário
   const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
 
+  // Melhor opção econômica
   const racaoMaisEconomica = resultadosOrdenados[0];
 
-  const racaoMelhorQualidade = resultadosOrdenados.find(r =>
-    categoriasOrdenadas.indexOf(r.categoria.toLowerCase()) >= 0
-  );
+  // Melhor opção de qualidade (diferente da mais econômica)
+  const racaoMelhorQualidade = resultadosOrdenados.find(
+    r => categoriasOrdenadas.indexOf(r.categoria) < categoriasOrdenadas.indexOf(racaoMaisEconomica.categoria)
+  ) || resultadosOrdenados[1]; // Caso não encontre, pega a segunda mais barata.
 
   return { racaoMaisEconomica, racaoMelhorQualidade };
 }
