@@ -54,7 +54,7 @@ function calcularConsumoDiario(peso, atividade, idade) {
     }
 
     const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade * fatorIdade;
-    console.log(\`Consumo diário (kcal): \${consumoDiarioKcal.toFixed(2)} (Idade: \${idade}, Fator Idade: \${fatorIdade})\`);
+    console.log(`Consumo diário (kcal): ${consumoDiarioKcal.toFixed(2)} (Idade: ${idade}, Fator Idade: ${fatorIdade})`);
     return consumoDiarioKcal;
 }
 
@@ -98,16 +98,16 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
         const duracaoPacote = (pesoPacoteSelecionado * 1000) / consumoDiarioGramas;
 
         // Adiciona os dados à tabela
-        tableBody.innerHTML += \`
+        tableBody.innerHTML += `
           <tr>
-            <td>\${racao.nome}</td>
-            <td>R$ \${precoAtualizado.toFixed(2)}</td>
-            <td>\${consumoDiarioGramas.toFixed(2)} g</td>
-            <td>R$ \${custoDiario.toFixed(2)}</td>
-            <td>\${Math.floor(duracaoPacote)} dias</td>
-            <td>\${racao.link ? \`<a href="\${racao.link}" target="_blank">Comprar</a>\` : "Não disponível"}</td>
+            <td>${racao.nome}</td>
+            <td>R$ ${precoAtualizado.toFixed(2)}</td>
+            <td>${consumoDiarioGramas.toFixed(2)} g</td>
+            <td>R$ ${custoDiario.toFixed(2)}</td>
+            <td>${Math.floor(duracaoPacote)} dias</td>
+            <td>${racao.link ? `<a href="${racao.link}" target="_blank">Comprar</a>` : "Não disponível"}</td>
           </tr>
-        \`;
+        `;
 
         return {
             ...racao,
