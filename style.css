@@ -1,273 +1,138 @@
-
-/* Estilo base */
+/* Estilo geral */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f9f9f9;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
 }
 
-/* Menu lateral fixo */
-.menu-lateral {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px;
-  height: 100%;
-  background-color: #20c6d6;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  color: #fff;
-  padding-top: 20px;
-}
-
-/* Título do aplicativo no menu */
-.app-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #ffffff;
-  text-align: center;
-  margin: 20px 0;
-}
-
-.menu-lateral ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.menu-lateral ul li {
-  padding: 15px 20px;
-  font-size: 18px;
-}
-
-.menu-lateral ul li a {
-  color: #fff;
-  text-decoration: none;
-  display: block;
-}
-
-.menu-lateral ul li a:hover {
-  background-color: #1ba5b3;
-  border-radius: 5px;
-}
-
-/* Conteúdo principal */
-.content {
-  margin-left: 250px;
-  padding: 20px;
-}
-
-/* Estilo da tabela */
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 18px;
-  text-align: left;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.styled-table thead tr {
-  background-color: #20c6d6;
-  color: #ffffff;
-  text-align: center;
-}
-
-.styled-table th,
-.styled-table td {
-  padding: 12px 15px;
-  border-bottom: 1px solid #dddddd;
-}
-
-.styled-table tbody tr {
-  transition: background-color 0.3s;
-}
-
-.styled-table tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
-.styled-table tbody td a {
-  text-decoration: none;
-  color: #20c6d6;
-  font-size: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.styled-table tbody td a img {
-  width: 24px;
-  height: 24px;
-}
-
-/* Botão de calcular */
-button#calcular {
-  background-color: #20c6d6;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
-}
-
-button#calcular:hover {
-  background-color: #1ba5b3;
-}
-
-/* Formulário */
-.form-container {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-/* Comparativo Geral */
-.comparativo-item {
-  background-color: #ffffff;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.comparativo-item h3 {
-  font-size: 20px;
-  color: #20c6d6;
-}
-
-.comparativo-item p {
-  font-size: 16px;
-  margin: 5px 0;
-}
-
-/* Títulos das análises */
-.analysis-title {
-  margin-bottom: 15px;
-  font-size: 24px;
-  color: #20c6d6;
-  border-bottom: 2px solid #20c6d6;
-  padding-bottom: 5px;
-}
-
-/* Tabela detalhada */
-.comparativo-detalhado table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  font-size: 16px;
-}
-
-.comparativo-detalhado th, 
-.comparativo-detalhado td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: center;
-}
-
-.comparativo-detalhado th {
-  background-color: #20c6d6;
-  color: #ffffff;
-}
-
-.comparativo-detalhado tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.comparativo-detalhado tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* Análise Econômica */
-#economia {
-  background-color: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-size: 18px;
-}
-
-#economia p {
-  margin: 10px 0;
-}
-
-#economia ul {
-  margin: 10px 0;
-  padding: 0 15px;
-}
-
-#economia ul li {
-  margin-bottom: 5px;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-  .menu-lateral {
-    width: 200px;
-  }
-
-  .menu-lateral ul li {
-    font-size: 16px;
-    padding: 10px;
-  }
-
-  .content {
-    margin-left: 200px;
-  }
-}
-
-@media (max-width: 576px) {
-  .menu-lateral {
-    display: none;
-  }
-
-  .content {
-    margin-left: 0;
-    padding: 10px;
-  }
-
-  .menu-toggle {
-    display: block;
-    background-color: #20c6d6;
-    color: white;
-    font-size: 20px;
-    padding: 10px;
-    cursor: pointer;
+/* Menu lateral */
+.sidebar {
+    width: 250px;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1001;
-  }
+    height: 100%;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-canvas {
-  max-width: 100%;
-  height: auto !important;
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    padding: 8px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+    background-color: #575757;
+}
+
+/* Conteúdo principal */
+.main-content {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+/* Formulário */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Resultados */
+#results {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .main-content {
+        margin-left: 210px;
+    }
+
+    table, th, td {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
 }
