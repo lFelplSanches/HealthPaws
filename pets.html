@@ -1,26 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="HealthPaws - Otimize o custo de alimentação para o seu pet com análises personalizadas.">
-  <title>HealthPaws</title>
+  <title>HealthPaws - Calculadora de Alimentação</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <!-- Menu Lateral -->
   <div class="menu-toggle">☰ Menu</div>
-<div class="menu-lateral">
+  <div class="menu-lateral">
     <h1 class="app-title">HealthPaws</h1>
     <ul>
-      <li><a href="https://lfelplsanches.github.io/HealthPaws/">Início</a></li>
+      <li><a href="index.html">Início</a></li>
       <li><a href="https://fofuradepelo.lojavirtualnuvem.com.br/" target="_blank" rel="noopener noreferrer">Loja</a></li>
     </ul>
   </div>
-
-  <!-- Conteúdo Principal -->
   <div class="content">
     <div class="form-container">
       <div class="form-group">
@@ -32,7 +28,7 @@
       </div>
       <div class="form-group">
         <label for="peso">Peso do Pet (kg):</label>
-        <input type="number" id="peso" placeholder="Ex: 10">
+        <input type="number" id="peso" placeholder="Ex: 10" required>
       </div>
       <div class="form-group">
         <label for="idade">Idade do Pet:</label>
@@ -59,10 +55,8 @@
           <option value="20">20 kg</option>
         </select>
       </div>
-      <button id="calcular">Calcular</button>
+      <button id="calcular" class="btn-calculate">Calcular</button>
     </div>
-
-    <!-- Resultados -->
     <div class="results-container" id="results" style="display: none;">
       <h2>Resultados</h2>
       <table class="styled-table">
@@ -80,18 +74,13 @@
       </table>
       <div id="economia" style="margin-top: 20px;"></div>
     </div>
-
-    <!-- Comparativo e Análise Detalhada -->
     <div id="comparativo" class="comparativo-container" style="margin-top: 20px;">
       <div class="comparativo-item" id="melhor-economica"></div>
       <div class="comparativo-item" id="melhor-qualidade"></div>
       <div id="comparativo-detalhado" style="margin-top: 20px;"></div>
     </div>
-
-    <!-- Gráfico -->
     <canvas id="grafico-comparativo" style="margin-top: 20px; max-width: 600px;"></canvas>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
