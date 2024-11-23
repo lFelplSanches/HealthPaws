@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +8,12 @@
 </head>
 <body>
     <div class="sidebar">
-        <h2>Fofura de Pelo</h2>
+        <h2>Health Paws</h2>
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="pets.html" class="active">Cadastro de Pet</a></li>
             <li><a href="about.html">Sobre</a></li>
+            <li><a href="https://fofuradepelo.lojavirtualnuvem.com.br/">Loja</a></li>
         </ul>
     </div>
     <div class="main-content">
@@ -73,5 +74,37 @@
             </table>
         </div>
     </div>
+    <script>
+        document.getElementById("calcular").addEventListener("click", function() {
+            const nome = document.getElementById("nome").value;
+            const tipoPet = document.getElementById("tipo-pet").value;
+            const peso = parseFloat(document.getElementById("peso").value);
+            const idade = parseFloat(document.getElementById("idade").value);
+            const atividade = parseFloat(document.getElementById("atividade").value);
+            const pesoPacote = parseFloat(document.getElementById("peso-pacote").value);
+
+            if (!nome || peso <= 0 || idade < 0 || atividade <= 0 || pesoPacote <= 0) {
+                alert("Preencha todos os campos corretamente.");
+                return;
+            }
+
+            // Simulação de resultado - substituir pela lógica real
+            const consumoDiario = (70 * Math.pow(peso, 0.75) * atividade).toFixed(2);
+            const duracaoPacote = (pesoPacote / (consumoDiario / 1000)).toFixed(2);
+
+            document.getElementById("results").style.display = "block";
+            const tableBody = document.getElementById("tableBody");
+            tableBody.innerHTML = `
+                <tr>
+                    <td>Ração Simulada</td>
+                    <td>R$ ${(pesoPacote * 10).toFixed(2)}</td>
+                    <td>${consumoDiario} g</td>
+                    <td>R$ ${(consumoDiario / 1000 * 10).toFixed(2)}</td>
+                    <td>${duracaoPacote} dias</td>
+                    <td><a href="#">Comprar</a></td>
+                </tr>
+            `;
+        });
+    </script>
 </body>
 </html>
