@@ -40,15 +40,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const calcularButton = document.getElementById("calcular");
   calcularButton.addEventListener("click", async () => {
     const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
-    const peso = parseFloat(document.getElementById("peso").value);
-    const idade = parseFloat(document.getElementById("idade").value);
-    const atividade = parseFloat(document.getElementById("atividade").value);
-    const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
+const peso = parseFloat(document.getElementById("peso").value);
+const idade = parseFloat(document.getElementById("idade").value);
+const atividade = parseFloat(document.getElementById("atividade").value);
+const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
 
-    if (!tipoPet || isNaN(peso) || isNaN(idade) || isNaN(atividade) || isNaN(pesoPacoteSelecionado)) {
-      alert("Preencha todos os campos corretamente.");
-      return;
-    }
+if (!tipoPet.trim() || peso <= 0 || idade < 0 || atividade <= 0 || pesoPacoteSelecionado <= 0) {
+  alert("Preencha todos os campos corretamente.");
+  return;
+}
 
     const pesoValido = await validarPesoPacote(tipoPet, pesoPacoteSelecionado);
     if (!pesoValido) return;
