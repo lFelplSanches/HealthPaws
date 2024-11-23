@@ -1,9 +1,6 @@
 if (typeof historico === "undefined") {
   var historico = [];
 }
-if (typeof historico === "undefined") {
-  var historico = [];
-}
 
 if (typeof racoes === "undefined") {
   var racoes = [];
@@ -28,6 +25,20 @@ async function carregarRacoesPorTipo(tipoPet, pesoPacote) {
     alert("Erro ao carregar os dados das rações. Verifique sua conexão com o servidor.");
     return [];
   }
+}
+
+// Função para calcular o consumo diário em calorias
+function calcularConsumoDiario(peso, atividade, idade) {
+  let fatorIdade = 1;
+  if (idade < 1) {
+    fatorIdade = 1.5; // Filhotes
+  } else if (idade > 7) {
+    fatorIdade = 0.8; // Idosos
+  }
+
+  const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade * fatorIdade;
+  console.log(`Consumo diário calculado: ${consumoDiarioKcal.toFixed(2)} kcal`);
+  return consumoDiarioKcal;
 }
 
 // Função para calcular os produtos
@@ -69,52 +80,45 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
   });
 }
 
-// Evento DOMContentLoaded e lógica do botão
+// Função principal de cálculo
+async function processarCalculo() {
+  try {
+    const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
+    const peso = parseFloat(document.getElementById("peso").value);
+    const idade = parseFloat(document.getElementById("idade").value);
+    const atividade = parseFloat(document.getElementById("atividade").value);
+    const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
+
+    if (!tipoPet.trim() || peso <= 0 || idade < 0 || atividade <= 0 || pesoPacoteSelecionado <= 0) {
+      alert("Preencha todos os campos corretamente.");
+      return;
+    }
+
+    const consumoDiarioKcal = calcularConsumoDiario(peso, atividade, idade);
+    const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
+    const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
+
+    if (resultados.length === 0) {
+      alert("Nenhuma ração disponível para o tipo de pet selecionado.");
+      return;
+    }
+
+    const resultsContainer = document.getElementById("results");
+    if (resultsContainer) {
+      resultsContainer.style.display = "block"; // Garante que os resultados estão visíveis
+    } else {
+      console.error("Elemento 'results' não encontrado no DOM.");
+    }
+  } catch (error) {
+    console.error("Erro ao processar o cálculo:", error);
+  }
+}
+
+// Evento DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
   const calcularButton = document.getElementById("calcular");
-
   if (calcularButton) {
-    calcularButton.addEventListener("click", async () => {
-      try {
-        const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
-        const peso = parseFloat(document.getElementById("peso").value);
-        const idade = parseFloat(document.getElementById("idade").value);
-        const atividade = parseFloat(document.getElementById("atividade").value);
-        const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
-
-        if (!tipoPet.trim() || peso <= 0 || idade < 0 || atividade <= 0 || pesoPacoteSelecionado <= 0) {
-          alert("Preencha todos os campos corretamente.");
-          return;
-        }
-
-        // Ajuste pelo fator da idade
-        let fatorIdade = 1;
-        if (idade < 1) {
-          fatorIdade = 1.5; // Filhotes
-        } else if (idade > 7) {
-          fatorIdade = 0.8; // Idosos
-        }
-
-        const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade * fatorIdade;
-        const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
-        const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
-
-        if (resultados.length === 0) {
-          alert("Nenhuma ração disponível para o tipo de pet selecionado.");
-          return;
-        }
-
-        // Atualizar tabela e exibir resultados
-        const resultsContainer = document.getElementById("results");
-        if (resultsContainer) {
-          resultsContainer.style.display = "block"; // Garante que os resultados estão visíveis
-        } else {
-          console.error("Elemento 'results' não encontrado no DOM.");
-        }
-      } catch (error) {
-        console.error("Erro ao processar o cálculo:", error);
-      }
-    });
+    calcularButton.addEventListener("click", processarCalculo);
   } else {
     console.error("Botão calcular não encontrado no DOM.");
   }
