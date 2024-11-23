@@ -112,5 +112,3 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Botão calcular não encontrado no DOM.");
   }
 });
-
-// Outras funções (como calcularProdutos, mostrarMelhoresRacoes, mostrarEconomia) permanecem inalteradas...
