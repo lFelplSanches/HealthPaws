@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Ajuste pelo fator da idade
 let fatorIdade = 1;
 if (idade < 1) {
-    fatorIdade = 1.5; // Jovens
+    fatorIdade = 1.5; // Jovem
 } else if (idade > 7) {
     fatorIdade = 0.8; // Idosos
 }
