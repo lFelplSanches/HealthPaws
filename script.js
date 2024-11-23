@@ -48,6 +48,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// Função para carregar os dados das rações
+async function carregarRacoesPorTipo(tipoPet, pesoPacote) {
+    try {
+        const response = await fetch('http://localhost:3000/filter-racoes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tipoPet, pesoPacote })
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao carregar os dados do servidor.");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Erro ao carregar as rações:", error);
+        return [];
+    }
+}
+
 // Função para calcular o consumo diário em calorias
 function calcularConsumoDiario(peso, atividade, idade) {
     let fatorIdade = 1;
