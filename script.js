@@ -5,30 +5,20 @@ let racoes = [];
 // Função para carregar os dados das rações
 async function carregarRacoesPorTipo(tipoPet) {
   try {
-    const response = await fetch('./racoes.csv'); // Carregar arquivo CSV
+    const response = await fetch('http://localhost:3000/filter-racoes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tipoPet })
+    });
+
     if (!response.ok) {
-      throw new Error("Erro ao carregar o arquivo CSV");
+      throw new Error("Erro ao carregar os dados do servidor.");
     }
-    const data = await response.text();
-    const linhas = data.split('\n').slice(1); // Ignorar o cabeçalho
-    return linhas
-      .filter(l => l.trim() !== "") // Ignorar linhas vazias
-      .map(l => {
-        const [nome, preco, densidade, pesoPacote, tipo, categoria, compra] = l.split(',');
-        return {
-          nome: nome.trim(),
-          preco: parseFloat(preco),
-          densidade: parseFloat(densidade),
-          pesoPacote: parseFloat(pesoPacote),
-          tipo: tipo.trim().toLowerCase(),
-          categoria: categoria ? categoria.trim().toLowerCase() : "standard",
-          compra: compra ? compra.trim() : null
-        };
-      })
-      .filter(r => r.tipo === tipoPet.toLowerCase()); // Filtrar por tipo de pet
+
+    return await response.json();
   } catch (error) {
-    console.error("Erro ao carregar as rações por tipo:", error);
-    alert("Erro ao carregar os dados das rações. Verifique o arquivo e tente novamente.");
+    console.error("Erro ao carregar as rações:", error);
+    alert("Erro ao carregar os dados das rações. Verifique sua conexão com o servidor.");
     return [];
   }
 }
@@ -36,13 +26,11 @@ async function carregarRacoesPorTipo(tipoPet) {
 // Validar o peso do pacote para o tipo de pet selecionado
 async function validarPesoPacote(tipoPet, pesoPacoteSelecionado) {
   const racoesFiltradas = await carregarRacoesPorTipo(tipoPet);
-  const pesosDisponiveis = racoesFiltradas.map(r => r.pesoPacote); // Coletar os pesos disponíveis
+  const pesosDisponiveis = racoesFiltradas.map(r => r.pesoPacote);
   if (!pesosDisponiveis.includes(pesoPacoteSelecionado)) {
-    alert(
-      `O peso do pacote de ${pesoPacoteSelecionado} kg não está disponível para o tipo de pet selecionado.
+    alert(`O peso do pacote de ${pesoPacoteSelecionado} kg não está disponível para o tipo de pet selecionado.
 ` +
-      `Pesos disponíveis: ${[...new Set(pesosDisponiveis)].join(', ')} kg`
-    );
+      `Pesos disponíveis: ${[...new Set(pesosDisponiveis)].join(', ')} kg`);
     return false;
   }
   return true;
@@ -63,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Validar o peso do pacote antes de continuar
     const pesoValido = await validarPesoPacote(tipoPet, pesoPacoteSelecionado);
     if (!pesoValido) return;
 
@@ -89,19 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Função para calcular os produtos
-function calcularProdutos(consumoDiarioKcal) {
+function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado) {
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
-
-  const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
-  const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
-
-  const racoesFiltradas = racoes.filter(r => r.tipo === tipoPet);
-
-  if (racoesFiltradas.length === 0) {
-    console.error("Nenhuma ração encontrada para o tipo de pet selecionado.");
-    return [];
-  }
 
   return racoesFiltradas.map(r => {
     const precoPorKg = r.preco / r.pesoPacote;
@@ -130,16 +107,13 @@ function calcularProdutos(consumoDiarioKcal) {
 function encontrarMelhoresRacoes(resultados) {
   const categoriasOrdenadas = ["super premium", "premium", "standard"];
 
-  // Ordenar por custo diário
   const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
 
-  // Melhor opção econômica
   const racaoMaisEconomica = resultadosOrdenados[0];
 
-  // Melhor opção de qualidade (diferente da mais econômica)
   const racaoMelhorQualidade = resultadosOrdenados.find(
     r => categoriasOrdenadas.indexOf(r.categoria) < categoriasOrdenadas.indexOf(racaoMaisEconomica.categoria)
-  ) || resultadosOrdenados[1]; // Caso não encontre, pega a segunda mais barata.
+  ) || resultadosOrdenados[1];
 
   return { racaoMaisEconomica, racaoMelhorQualidade };
 }
@@ -215,89 +189,3 @@ function mostrarEconomia(resultados) {
     </ul>
   `;
 }
-
-// Toggle menu for responsive design
-document.querySelector('.menu-toggle').addEventListener('click', () => {
-  document.querySelector('.menu-lateral').classList.toggle('show');
-});
-
-// Filter CSV data by pet type before processing
-async function carregarRacoesPorTipo(tipoPet) {
-  try {
-    const response = await fetch('./racoes.csv'); // Load the CSV file
-    if (!response.ok) {
-      throw new Error("Erro ao carregar o arquivo CSV");
-    }
-    const data = await response.text();
-    const linhas = data.split('\n').slice(1); // Ignore the header
-    return linhas
-      .filter(l => l.trim() !== "") // Ignore empty lines
-      .map(l => {
-        const [nome, preco, densidade, pesoPacote, tipo, categoria, compra] = l.split(',');
-        return {
-          nome: nome.trim(),
-          preco: parseFloat(preco),
-          densidade: parseFloat(densidade),
-          pesoPacote: parseFloat(pesoPacote),
-          tipo: tipo.trim().toLowerCase(),
-          categoria: categoria ? categoria.trim().toLowerCase() : "standard",
-          compra: compra ? compra.trim() : null
-        };
-      })
-      .filter(r => r.tipo === tipoPet.toLowerCase()); // Filter by pet type
-  } catch (error) {
-    console.error("Erro ao carregar as rações por tipo:", error);
-    alert("Erro ao carregar os dados das rações. Verifique o arquivo e tente novamente.");
-    return [];
-  }
-}
-
-// Validate the selected package weight before calculation
-async function validarPesoPacote(tipoPet, pesoPacoteSelecionado) {
-  const racoesFiltradas = await carregarRacoesPorTipo(tipoPet);
-  const pesoDisponivel = racoesFiltradas.some(r => r.pesoPacote === pesoPacoteSelecionado);
-  if (!pesoDisponivel) {
-    alert(`O peso do pacote de ${pesoPacoteSelecionado} kg não está disponível para o tipo de pet selecionado.`);
-    return false;
-  }
-  return true;
-}
-
-// Override the "Calcular" button logic to include validation and optimized loading
-document.addEventListener("DOMContentLoaded", () => {
-  const calcularButton = document.getElementById("calcular");
-  calcularButton.addEventListener("click", async () => {
-    const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
-    const peso = parseFloat(document.getElementById("peso").value);
-    const idade = document.getElementById("idade").value;
-    const atividade = parseFloat(document.getElementById("atividade").value);
-    const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
-
-    if (!tipoPet || isNaN(peso) || !idade || isNaN(atividade) || isNaN(pesoPacoteSelecionado)) {
-      alert("Preencha todos os campos corretamente.");
-      return;
-    }
-
-    const pesoValido = await validarPesoPacote(tipoPet, pesoPacoteSelecionado);
-    if (!pesoValido) return;
-
-    const RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
-    const consumoDiarioKcal = RER * atividade;
-
-    const racoesFiltradas = await carregarRacoesPorTipo(tipoPet);
-    const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
-
-    if (resultados.length === 0) {
-      alert("Nenhuma ração disponível para o tipo de pet selecionado.");
-      return;
-    }
-
-    const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
-
-    mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
-    mostrarEconomia(resultados);
-    mostrarAnaliseEconomicaDetalhada(racaoMaisEconomica, racaoMelhorQualidade, consumoDiarioKcal);
-
-    document.getElementById("results").style.display = "block";
-  });
-});
