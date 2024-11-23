@@ -14,6 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            console.log("Dados capturados com sucesso. Continuando o cálculo...");
+            // Aqui vai a lógica do cálculo
+        } catch (error) {
+            console.error("Erro ao processar o cálculo:", error);
+        }
+    }
             // Lógica de cálculo (adapte conforme necessário)
             const consumoDiarioKcal = calcularConsumoDiario(peso, atividade, idade);
             const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
@@ -35,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Associa evento ao botão
+    // Associar o evento de clique ao botão
     const calcularButton = document.getElementById("calcular");
     if (calcularButton) {
         calcularButton.addEventListener("click", processarCalculo);
