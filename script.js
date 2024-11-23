@@ -144,11 +144,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Exibir resultados
         mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
-        const resultsContainer = document.getElementById("results-container");
+        const resultsContainer = document.getElementById("results");
         if (resultsContainer) {
           resultsContainer.style.display = "block"; // Garante que os resultados estão visíveis
         } else {
-          console.error("Elemento 'results-container' não encontrado no DOM.");
+          console.error("Elemento 'results' não encontrado no DOM.");
         }
       } catch (error) {
         console.error("Erro ao processar o cálculo:", error);
