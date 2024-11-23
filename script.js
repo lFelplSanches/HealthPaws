@@ -1,5 +1,8 @@
 
-let historico = [];
+if (typeof historico === "undefined") {
+  var historico = [];
+}
+
 let racoes = [];
 
 // Função para carregar os dados das rações
