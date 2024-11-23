@@ -23,21 +23,6 @@ async function carregarRacoesPorTipo(tipoPet, pesoPacote) {
   }
 }
 
-// Função para validar peso do pacote
-async function validarPesoPacote(tipoPet, pesoPacoteSelecionado) {
-  const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
-
-  const pesosDisponiveis = racoesFiltradas.map(r => parseFloat(r.pesoPacote));
-
-  if (!pesosDisponiveis.includes(pesoPacoteSelecionado)) {
-    alert(`O peso do pacote de ${pesoPacoteSelecionado} kg não está disponível para o tipo de pet selecionado.
-` +
-      `Pesos disponíveis: ${[...new Set(pesosDisponiveis)].join(', ')} kg`);
-    return false;
-  }
-  return true;
-}
-
 // Função para calcular os produtos
 function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado) {
   const tableBody = document.getElementById("tableBody");
@@ -88,33 +73,7 @@ function encontrarMelhoresRacoes(resultados) {
   return { racaoMaisEconomica, racaoMelhorQualidade };
 }
 
-// Função para mostrar as melhores rações
-function mostrarMelhoresRacoes(melhorEconomica, melhorQualidade) {
-  const melhorEconomicaContainer = document.getElementById("melhor-economica");
-  const melhorQualidadeContainer = document.getElementById("melhor-qualidade");
-
-  melhorEconomicaContainer.innerHTML = `
-    <h3>Melhor Opção Econômica</h3>
-    <p><strong>Nome:</strong> ${melhorEconomica.nome}</p>
-    <p><strong>Custo Diário:</strong> R$ ${melhorEconomica.custoDiario.toFixed(2)}</p>
-    <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorEconomica.duracaoPacote)} dias</p>
-    <p><strong>Link:</strong> ${melhorEconomica.link ? `<a href="${melhorEconomica.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
-  `;
-
-  if (melhorQualidade) {
-    melhorQualidadeContainer.innerHTML = `
-      <h3>Melhor Opção de Qualidade</h3>
-      <p><strong>Nome:</strong> ${melhorQualidade.nome}</p>
-      <p><strong>Custo Diário:</strong> R$ ${melhorQualidade.custoDiario.toFixed(2)}</p>
-      <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorQualidade.duracaoPacote)} dias</p>
-      <p><strong>Link:</strong> ${melhorQualidade.link ? `<a href="${melhorQualidade.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
-    `;
-  } else {
-    melhorQualidadeContainer.innerHTML = `<h3>Melhor Opção de Qualidade</h3><p>Nenhuma disponível.</p>`;
-  }
-}
-
-// Evento DOMContentLoaded e cálculo
+// Evento DOMContentLoaded e lógica do botão
 document.addEventListener("DOMContentLoaded", () => {
   const calcularButton = document.getElementById("calcular");
 
@@ -132,10 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        const pesoValido = await validarPesoPacote(tipoPet, pesoPacoteSelecionado);
-        if (!pesoValido) return;
-
-        const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade; // Exemplo para RER
+        const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade;
         const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
         const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
 
@@ -145,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
-        mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
+        console.log("Rações encontradas: ", racaoMaisEconomica, racaoMelhorQualidade);
       } catch (error) {
         console.error("Erro ao processar o cálculo:", error);
       }
