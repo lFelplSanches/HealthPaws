@@ -71,6 +71,32 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
   });
 }
 
+// Função para mostrar as melhores rações
+function mostrarMelhoresRacoes(melhorEconomica, melhorQualidade) {
+  const melhorEconomicaContainer = document.getElementById("melhor-economica");
+  const melhorQualidadeContainer = document.getElementById("melhor-qualidade");
+
+  // Exibe a ração mais econômica
+  melhorEconomicaContainer.innerHTML = `
+    <h3>Melhor Opção Econômica</h3>
+    <p><strong>Nome:</strong> ${melhorEconomica.nome}</p>
+    <p><strong>Custo Diário:</strong> R$ ${melhorEconomica.custoDiario.toFixed(2)}</p>
+    <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorEconomica.duracaoPacote)} dias</p>
+  `;
+
+  // Exibe a ração de melhor qualidade, se disponível
+  if (melhorQualidade) {
+    melhorQualidadeContainer.innerHTML = `
+      <h3>Melhor Opção de Qualidade</h3>
+      <p><strong>Nome:</strong> ${melhorQualidade.nome}</p>
+      <p><strong>Custo Diário:</strong> R$ ${melhorQualidade.custoDiario.toFixed(2)}</p>
+      <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorQualidade.duracaoPacote)} dias</p>
+    `;
+  } else {
+    melhorQualidadeContainer.innerHTML = `<h3>Melhor Opção de Qualidade</h3><p>Nenhuma disponível.</p>`;
+  }
+}
+
 // Função para encontrar as melhores rações
 function encontrarMelhoresRacoes(resultados) {
   const categoriasOrdenadas = ["super premium", "premium", "standard"];
@@ -133,8 +159,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
 
         mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
-        mostrarEconomia(resultados);
-        mostrarAnaliseEconomicaDetalhada(racaoMaisEconomica, racaoMelhorQualidade, consumoDiarioKcal);
 
         document.getElementById("results").style.display = "block";
       } catch (error) {
