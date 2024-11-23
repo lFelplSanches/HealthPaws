@@ -226,3 +226,48 @@ button#calcular:hover {
 #economia ul li {
   margin-bottom: 5px;
 }
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .menu-lateral {
+    width: 200px;
+  }
+
+  .menu-lateral ul li {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .content {
+    margin-left: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .menu-lateral {
+    display: none;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  .menu-toggle {
+    display: block;
+    background-color: #20c6d6;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+  }
+}
+
+canvas {
+  max-width: 100%;
+  height: auto !important;
+}

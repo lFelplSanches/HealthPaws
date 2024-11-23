@@ -195,3 +195,8 @@ function mostrarEconomia(resultados) {
     </ul>
   `;
 }
+
+// Toggle menu for responsive design
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.menu-lateral').classList.toggle('show');
+});
