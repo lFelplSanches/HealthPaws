@@ -37,6 +37,40 @@ async function validarPesoPacote(tipoPet, pesoPacoteSelecionado) {
   return true;
 }
 
+// Função para calcular os produtos
+function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado) {
+  const tableBody = document.getElementById("tableBody");
+  tableBody.innerHTML = ""; // Limpa os resultados anteriores
+
+  return racoesFiltradas.map(racao => {
+    const precoPorKg = racao.preco / racao.pesoPacote;
+    const precoAtualizado = precoPorKg * pesoPacoteSelecionado;
+
+    const consumoDiarioGramas = (consumoDiarioKcal / racao.densidade) * 1000;
+    const custoDiario = (consumoDiarioGramas / 1000) * precoPorKg;
+    const duracaoPacote = (pesoPacoteSelecionado * 1000) / consumoDiarioGramas;
+
+    // Adiciona os dados à tabela
+    tableBody.innerHTML += `
+      <tr>
+        <td>${racao.nome}</td>
+        <td>R$ ${precoAtualizado.toFixed(2)}</td>
+        <td>${consumoDiarioGramas.toFixed(2)} g</td>
+        <td>R$ ${custoDiario.toFixed(2)}</td>
+        <td>${Math.floor(duracaoPacote)} dias</td>
+        <td>${racao.link ? `<a href="${racao.link}" target="_blank">Comprar</a>` : "N/A"}</td>
+      </tr>
+    `;
+
+    return {
+      ...racao,
+      consumoDiarioGramas,
+      custoDiario,
+      duracaoPacote
+    };
+  });
+}
+
 // Função para encontrar as melhores rações
 function encontrarMelhoresRacoes(resultados) {
   const categoriasOrdenadas = ["super premium", "premium", "standard"];
