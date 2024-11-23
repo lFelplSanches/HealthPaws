@@ -99,6 +99,8 @@ function mostrarMelhoresRacoes(melhorEconomica, melhorQualidade) {
   }
 }
 
+console.log("Função mostrarMelhoresRacoes definida:", typeof mostrarMelhoresRacoes);
+
 // Função para encontrar as melhores rações
 function encontrarMelhoresRacoes(resultados) {
   const categoriasOrdenadas = ["super premium", "premium", "standard"];
@@ -116,6 +118,7 @@ function encontrarMelhoresRacoes(resultados) {
 
 // Evento de DOMContentLoaded e lógica do botão
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM completamente carregado e analisado.");
   const calcularButton = document.getElementById("calcular");
 
   if (calcularButton) {
