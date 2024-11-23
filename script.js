@@ -1,12 +1,4 @@
 
-// Funções completas e integradas, incluindo:
-// 1. Cálculo de produtos
-// 2. Validação de peso
-// 3. Análise econômica detalhada
-// 4. Integração com o DOM
-// 5. Links de compra
-// O conteúdo é extenso, mas está 100% funcional.
-
 let historico = [];
 let racoes = [];
 
@@ -78,6 +70,22 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
       duracaoPacote
     };
   });
+}
+
+// Função para encontrar as melhores rações
+function encontrarMelhoresRacoes(resultados) {
+  const categoriasOrdenadas = ["super premium", "premium", "standard"];
+
+  const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+
+  const racaoMaisEconomica = resultadosOrdenados[0];
+
+  const racaoMelhorQualidade = resultadosOrdenados.find(
+    r => categoriasOrdenadas.indexOf(r.categoria.toLowerCase()) <
+         categoriasOrdenadas.indexOf(racaoMaisEconomica.categoria.toLowerCase())
+  ) || resultadosOrdenados[0];
+
+  return { racaoMaisEconomica, racaoMelhorQualidade };
 }
 
 // Função para mostrar as melhores rações
