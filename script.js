@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote")?.value);
 
             // Validação dos campos
-            if (!tipoPet || isNaN(peso) || isNaN(idade) || isNaN(atividade) || isNaN(pesoPacoteSelecionado)) {
+            if (!tipoPet || peso <= 0 || idade < 0 || atividade <= 0 || pesoPacoteSelecionado <= 0) {
                 alert("Preencha todos os campos corretamente.");
                 return;
             }
