@@ -73,6 +73,8 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
 
 // Função para mostrar as melhores rações
 function mostrarMelhoresRacoes(melhorEconomica, melhorQualidade) {
+  console.log("Função mostrarMelhoresRacoes carregada com sucesso!");
+
   const melhorEconomicaContainer = document.getElementById("melhor-economica");
   const melhorQualidadeContainer = document.getElementById("melhor-qualidade");
 
