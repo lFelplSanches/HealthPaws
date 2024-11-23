@@ -57,6 +57,32 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
   });
 }
 
+// Função para mostrar as melhores rações
+function mostrarMelhoresRacoes(melhorEconomica, melhorQualidade) {
+  const melhorEconomicaContainer = document.getElementById("melhor-economica");
+  const melhorQualidadeContainer = document.getElementById("melhor-qualidade");
+
+  melhorEconomicaContainer.innerHTML = `
+    <h3>Melhor Opção Econômica</h3>
+    <p><strong>Nome:</strong> ${melhorEconomica.nome}</p>
+    <p><strong>Custo Diário:</strong> R$ ${melhorEconomica.custoDiario.toFixed(2)}</p>
+    <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorEconomica.duracaoPacote)} dias</p>
+    <p><strong>Link:</strong> ${melhorEconomica.link ? `<a href="${melhorEconomica.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
+  `;
+
+  if (melhorQualidade) {
+    melhorQualidadeContainer.innerHTML = `
+      <h3>Melhor Opção de Qualidade</h3>
+      <p><strong>Nome:</strong> ${melhorQualidade.nome}</p>
+      <p><strong>Custo Diário:</strong> R$ ${melhorQualidade.custoDiario.toFixed(2)}</p>
+      <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorQualidade.duracaoPacote)} dias</p>
+      <p><strong>Link:</strong> ${melhorQualidade.link ? `<a href="${melhorQualidade.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
+    `;
+  } else {
+    melhorQualidadeContainer.innerHTML = `<h3>Melhor Opção de Qualidade</h3><p>Nenhuma disponível.</p>`;
+  }
+}
+
 // Função para encontrar as melhores rações
 function encontrarMelhoresRacoes(resultados) {
   const categoriasOrdenadas = ["super premium", "premium", "standard"];
@@ -101,10 +127,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
-        console.log("Rações encontradas: ", racaoMaisEconomica, racaoMelhorQualidade);
+
+        // Exibir resultados
+        mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
+        document.getElementById("results-container").style.display = "block"; // Garante que os resultados estão visíveis
       } catch (error) {
         console.error("Erro ao processar o cálculo:", error);
       }
     });
+  } else {
+    console.error("Botão calcular não encontrado no DOM.");
   }
 });
