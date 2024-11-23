@@ -3,7 +3,9 @@ if (typeof historico === "undefined") {
   var historico = [];
 }
 
-let racoes = [];
+if (typeof racoes === "undefined") {
+  var racoes = [];
+}
 
 // Função para carregar os dados das rações
 async function carregarRacoesPorTipo(tipoPet, pesoPacote) {
@@ -29,6 +31,11 @@ async function carregarRacoesPorTipo(tipoPet, pesoPacote) {
 // Função para calcular os produtos
 function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado) {
   const tableBody = document.getElementById("tableBody");
+  if (!tableBody) {
+    console.error("Elemento 'tableBody' não encontrado no DOM.");
+    return [];
+  }
+
   tableBody.innerHTML = ""; // Limpa os resultados anteriores
 
   return racoesFiltradas.map(racao => {
@@ -65,24 +72,28 @@ function mostrarMelhoresRacoes(melhorEconomica, melhorQualidade) {
   const melhorEconomicaContainer = document.getElementById("melhor-economica");
   const melhorQualidadeContainer = document.getElementById("melhor-qualidade");
 
-  melhorEconomicaContainer.innerHTML = `
-    <h3>Melhor Opção Econômica</h3>
-    <p><strong>Nome:</strong> ${melhorEconomica.nome}</p>
-    <p><strong>Custo Diário:</strong> R$ ${melhorEconomica.custoDiario.toFixed(2)}</p>
-    <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorEconomica.duracaoPacote)} dias</p>
-    <p><strong>Link:</strong> ${melhorEconomica.link ? `<a href="${melhorEconomica.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
-  `;
-
-  if (melhorQualidade) {
-    melhorQualidadeContainer.innerHTML = `
-      <h3>Melhor Opção de Qualidade</h3>
-      <p><strong>Nome:</strong> ${melhorQualidade.nome}</p>
-      <p><strong>Custo Diário:</strong> R$ ${melhorQualidade.custoDiario.toFixed(2)}</p>
-      <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorQualidade.duracaoPacote)} dias</p>
-      <p><strong>Link:</strong> ${melhorQualidade.link ? `<a href="${melhorQualidade.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
+  if (melhorEconomicaContainer) {
+    melhorEconomicaContainer.innerHTML = `
+      <h3>Melhor Opção Econômica</h3>
+      <p><strong>Nome:</strong> ${melhorEconomica.nome}</p>
+      <p><strong>Custo Diário:</strong> R$ ${melhorEconomica.custoDiario.toFixed(2)}</p>
+      <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorEconomica.duracaoPacote)} dias</p>
+      <p><strong>Link:</strong> ${melhorEconomica.link ? `<a href="${melhorEconomica.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
     `;
-  } else {
-    melhorQualidadeContainer.innerHTML = `<h3>Melhor Opção de Qualidade</h3><p>Nenhuma disponível.</p>`;
+  }
+
+  if (melhorQualidadeContainer) {
+    if (melhorQualidade) {
+      melhorQualidadeContainer.innerHTML = `
+        <h3>Melhor Opção de Qualidade</h3>
+        <p><strong>Nome:</strong> ${melhorQualidade.nome}</p>
+        <p><strong>Custo Diário:</strong> R$ ${melhorQualidade.custoDiario.toFixed(2)}</p>
+        <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorQualidade.duracaoPacote)} dias</p>
+        <p><strong>Link:</strong> ${melhorQualidade.link ? `<a href="${melhorQualidade.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
+      `;
+    } else {
+      melhorQualidadeContainer.innerHTML = `<h3>Melhor Opção de Qualidade</h3><p>Nenhuma disponível.</p>`;
+    }
   }
 }
 
@@ -133,7 +144,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Exibir resultados
         mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
-        document.getElementById("results-container").style.display = "block"; // Garante que os resultados estão visíveis
+        const resultsContainer = document.getElementById("results-container");
+        if (resultsContainer) {
+          resultsContainer.style.display = "block"; // Garante que os resultados estão visíveis
+        } else {
+          console.error("Elemento 'results-container' não encontrado no DOM.");
+        }
       } catch (error) {
         console.error("Erro ao processar o cálculo:", error);
       }
