@@ -2,27 +2,6 @@
 let historico = [];
 let racoes = [];
 
-// Função para carregar os dados das rações
-async function carregarRacoesPorTipo(tipoPet, pesoPacote) {
-  try {
-    const response = await fetch('http://localhost:3000/filter-racoes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tipoPet, pesoPacote })
-    });
-
-    if (!response.ok) {
-      throw new Error("Erro ao carregar os dados do servidor.");
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Erro ao carregar as rações:", error);
-    alert("Erro ao carregar os dados das rações. Verifique sua conexão com o servidor.");
-    return [];
-  }
-}
-
 // Função para calcular os produtos
 function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado) {
   const tableBody = document.getElementById("tableBody");
@@ -57,8 +36,28 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
   });
 }
 
-// Restante do código permanece inalterado...
+// Função para carregar os dados das rações
+async function carregarRacoesPorTipo(tipoPet, pesoPacote) {
+  try {
+    const response = await fetch('http://localhost:3000/filter-racoes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tipoPet, pesoPacote })
+    });
 
+    if (!response.ok) {
+      throw new Error("Erro ao carregar os dados do servidor.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao carregar as rações:", error);
+    alert("Erro ao carregar os dados das rações. Verifique sua conexão com o servidor.");
+    return [];
+  }
+}
+
+// Evento de DOMContentLoaded e lógica do botão
 document.addEventListener("DOMContentLoaded", () => {
   const calcularButton = document.getElementById("calcular");
 
@@ -75,9 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("Preencha todos os campos corretamente.");
           return;
         }
-
-        const pesoValido = await validarPesoPacote(tipoPet, pesoPacoteSelecionado);
-        if (!pesoValido) return;
 
         const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade; // Exemplo para RER
         const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
