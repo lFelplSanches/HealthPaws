@@ -130,8 +130,16 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("Preencha todos os campos corretamente.");
           return;
         }
+        
+        // Ajuste pelo fator da idade
+let fatorIdade = 1;
+if (idade < 1) {
+    fatorIdade = 1.5; // Filhotes
+} else if (idade > 7) {
+    fatorIdade = 0.8; // Idosos
+}
+const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade * fatorIdade;
 
-        const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade;
         const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
         const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
 
