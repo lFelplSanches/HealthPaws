@@ -124,3 +124,19 @@ function mostrarEconomia(resultados) {
     </ul>
   `;
 }
+
+
+// Função para encontrar as melhores rações
+function encontrarMelhoresRacoes(resultados) {
+  const categoriasOrdenadas = ["super premium", "premium", "standard"];
+
+  const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+
+  const racaoMaisEconomica = resultadosOrdenados[0];
+
+  const racaoMelhorQualidade = resultadosOrdenados.find(
+    r => categoriasOrdenadas.indexOf(r.categoria.toLowerCase()) < categoriasOrdenadas.indexOf(racaoMaisEconomica.categoria.toLowerCase())
+  ) || resultadosOrdenados[0];
+
+  return { racaoMaisEconomica, racaoMelhorQualidade };
+}
