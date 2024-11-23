@@ -193,3 +193,44 @@ function mostrarMelhoresRacoes(melhor, qualidade) {
     melhorQualidade.innerHTML = `<h3>Melhor Opção de Qualidade</h3><p>Nenhuma disponível.</p>`;
   }
 }
+
+
+// Função para mostrar análise econômica detalhada
+function mostrarAnaliseEconomicaDetalhada(melhor, qualidade, consumoDiarioKcal) {
+  const comparativoDetalhado = document.getElementById("comparativo-detalhado");
+
+  if (!comparativoDetalhado) {
+    console.error("O elemento para exibição da análise detalhada não foi encontrado no DOM.");
+    return;
+  }
+
+  comparativoDetalhado.innerHTML = `
+    <h3>Análise Econômica Detalhada</h3>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Critério</th>
+          <th>${melhor.nome}</th>
+          <th>${qualidade ? qualidade.nome : "N/A"}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Custo Diário (R$)</td>
+          <td>${melhor.custoDiario.toFixed(2)}</td>
+          <td>${qualidade ? qualidade.custoDiario.toFixed(2) : "N/A"}</td>
+        </tr>
+        <tr>
+          <td>Consumo Diário (g)</td>
+          <td>${((consumoDiarioKcal / melhor.densidade) * 1000).toFixed(2)}</td>
+          <td>${qualidade ? ((consumoDiarioKcal / qualidade.densidade) * 1000).toFixed(2) : "N/A"}</td>
+        </tr>
+        <tr>
+          <td>Duração Estimada (dias)</td>
+          <td>${Math.floor(melhor.duracaoPacote)}</td>
+          <td>${qualidade ? Math.floor(qualidade.duracaoPacote) : "N/A"}</td>
+        </tr>
+      </tbody>
+    </table>
+  `;
+}
