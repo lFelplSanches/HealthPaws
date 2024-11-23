@@ -37,70 +37,6 @@ async function validarPesoPacote(tipoPet, pesoPacoteSelecionado) {
   return true;
 }
 
-// Função para calcular os produtos
-function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado) {
-  const tableBody = document.getElementById("tableBody");
-  tableBody.innerHTML = ""; // Limpa os resultados anteriores
-
-  return racoesFiltradas.map(racao => {
-    const precoPorKg = racao.preco / racao.pesoPacote;
-    const precoAtualizado = precoPorKg * pesoPacoteSelecionado;
-
-    const consumoDiarioGramas = (consumoDiarioKcal / racao.densidade) * 1000;
-    const custoDiario = (consumoDiarioGramas / 1000) * precoPorKg;
-    const duracaoPacote = (pesoPacoteSelecionado * 1000) / consumoDiarioGramas;
-
-    // Adiciona os dados à tabela
-    tableBody.innerHTML += `
-      <tr>
-        <td>${racao.nome}</td>
-        <td>R$ ${precoAtualizado.toFixed(2)}</td>
-        <td>${consumoDiarioGramas.toFixed(2)} g</td>
-        <td>R$ ${custoDiario.toFixed(2)}</td>
-        <td>${Math.floor(duracaoPacote)} dias</td>
-        <td>${racao.link ? `<a href="${racao.link}" target="_blank">Comprar</a>` : "N/A"}</td>
-      </tr>
-    `;
-
-    return {
-      ...racao,
-      consumoDiarioGramas,
-      custoDiario,
-      duracaoPacote
-    };
-  });
-}
-
-// Função para mostrar as melhores rações
-function mostrarMelhoresRacoes(melhorEconomica, melhorQualidade) {
-  console.log("Função mostrarMelhoresRacoes carregada com sucesso!");
-
-  const melhorEconomicaContainer = document.getElementById("melhor-economica");
-  const melhorQualidadeContainer = document.getElementById("melhor-qualidade");
-
-  // Exibe a ração mais econômica
-  melhorEconomicaContainer.innerHTML = `
-    <h3>Melhor Opção Econômica</h3>
-    <p><strong>Nome:</strong> ${melhorEconomica.nome}</p>
-    <p><strong>Custo Diário:</strong> R$ ${melhorEconomica.custoDiario.toFixed(2)}</p>
-    <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorEconomica.duracaoPacote)} dias</p>
-  `;
-
-  // Exibe a ração de melhor qualidade, se disponível
-  if (melhorQualidade) {
-    melhorQualidadeContainer.innerHTML = `
-      <h3>Melhor Opção de Qualidade</h3>
-      <p><strong>Nome:</strong> ${melhorQualidade.nome}</p>
-      <p><strong>Custo Diário:</strong> R$ ${melhorQualidade.custoDiario.toFixed(2)}</p>
-      <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorQualidade.duracaoPacote)} dias</p>
-    `;
-  } else {
-    melhorQualidadeContainer.innerHTML = `<h3>Melhor Opção de Qualidade</h3><p>Nenhuma disponível.</p>`;
-  }
-}
-
-console.log("Função mostrarMelhoresRacoes definida:", typeof mostrarMelhoresRacoes);
-
 // Função para encontrar as melhores rações
 function encontrarMelhoresRacoes(resultados) {
   const categoriasOrdenadas = ["super premium", "premium", "standard"];
@@ -118,7 +54,6 @@ function encontrarMelhoresRacoes(resultados) {
 
 // Evento de DOMContentLoaded e lógica do botão
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM completamente carregado e analisado.");
   const calcularButton = document.getElementById("calcular");
 
   if (calcularButton) {
@@ -164,6 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
 
         mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
+        mostrarEconomia(resultados);
+        mostrarAnaliseEconomicaDetalhada(racaoMaisEconomica, racaoMelhorQualidade, consumoDiarioKcal);
 
         document.getElementById("results").style.display = "block";
       } catch (error) {
