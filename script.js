@@ -38,30 +38,39 @@ async function validarPesoPacote(tipoPet, pesoPacoteSelecionado) {
 // Ajustar a lógica do botão "Calcular"
 document.addEventListener("DOMContentLoaded", () => {
   const calcularButton = document.getElementById("calcular");
+
   calcularButton.addEventListener("click", async () => {
     const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
-const peso = parseFloat(document.getElementById("peso").value);
-const idade = parseFloat(document.getElementById("idade").value);
-const atividade = parseFloat(document.getElementById("atividade").value);
-const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
+    const peso = parseFloat(document.getElementById("peso").value);
+    const idade = parseFloat(document.getElementById("idade").value);
+    const atividade = parseFloat(document.getElementById("atividade").value);
+    const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
 
-if (!tipoPet.trim() || peso <= 0 || idade < 0 || atividade <= 0 || pesoPacoteSelecionado <= 0) {
-  alert("Preencha todos os campos corretamente.");
-  return;
-}
+    if (!tipoPet.trim() || peso <= 0 || idade < 0 || atividade <= 0 || pesoPacoteSelecionado <= 0) {
+      alert("Preencha todos os campos corretamente.");
+      return;
+    }
 
     const pesoValido = await validarPesoPacote(tipoPet, pesoPacoteSelecionado);
     if (!pesoValido) return;
 
     // Ajustar o RER com base na idade
-    let RER;
-    if (idade < 1) {
-      RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) * 3 : 100 * Math.pow(peso, 0.67) * 2.5; // Filhotes
-    } else if (idade >= 1 && idade <= 7) {
-      RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67); // Adultos
-    } else {
-      RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) * 0.8 : 100 * Math.pow(peso, 0.67) * 0.8; // Idosos
-    }
+    function calcularRER(tipoPet, peso, idade) {
+  let RER;
+
+  if (idade < 1) {
+    // Filhotes: Maior necessidade calórica
+    RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) * 3 : 100 * Math.pow(peso, 0.67) * 2.5;
+  } else if (idade >= 1 && idade <= 7) {
+    // Adultos: Necessidade padrão
+    RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
+  } else {
+    // Idosos: Menor necessidade calórica
+    RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) * 0.8 : 100 * Math.pow(peso, 0.67) * 0.8;
+  }
+
+  return RER;
+}
 
     const consumoDiarioKcal = RER * atividade;
 
@@ -109,6 +118,29 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
     return { ...r, custoDiario, duracaoPacote };
   });
 }
+
+// Cálculo do RER com a nova função
+    const RER = calcularRER(tipoPet, peso, idade);
+    const consumoDiarioKcal = RER * atividade;
+
+    const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
+    const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
+
+    if (resultados.length === 0) {
+      alert("Nenhuma ração disponível para o tipo de pet selecionado.");
+      return;
+    }
+
+    const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
+
+    mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
+    mostrarEconomia(resultados);
+    mostrarAnaliseEconomicaDetalhada(racaoMaisEconomica, racaoMelhorQualidade, consumoDiarioKcal);
+
+    document.getElementById("results").style.display = "block";
+  });
+});
+
 // Função para mostrar as melhores rações
 function mostrarMelhoresRacoes(melhor, qualidade) {
   const melhorEconomica = document.getElementById("melhor-economica");
