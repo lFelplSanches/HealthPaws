@@ -1,4 +1,3 @@
-
 if (typeof historico === "undefined") {
   var historico = [];
 }
@@ -67,52 +66,6 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
   });
 }
 
-// Função para mostrar as melhores rações
-function mostrarMelhoresRacoes(melhorEconomica, melhorQualidade) {
-  const melhorEconomicaContainer = document.getElementById("melhor-economica");
-  const melhorQualidadeContainer = document.getElementById("melhor-qualidade");
-
-  if (melhorEconomicaContainer) {
-    melhorEconomicaContainer.innerHTML = `
-      <h3>Melhor Opção Econômica</h3>
-      <p><strong>Nome:</strong> ${melhorEconomica.nome}</p>
-      <p><strong>Custo Diário:</strong> R$ ${melhorEconomica.custoDiario.toFixed(2)}</p>
-      <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorEconomica.duracaoPacote)} dias</p>
-      <p><strong>Link:</strong> ${melhorEconomica.link ? `<a href="${melhorEconomica.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
-    `;
-  }
-
-  if (melhorQualidadeContainer) {
-    if (melhorQualidade) {
-      melhorQualidadeContainer.innerHTML = `
-        <h3>Melhor Opção de Qualidade</h3>
-        <p><strong>Nome:</strong> ${melhorQualidade.nome}</p>
-        <p><strong>Custo Diário:</strong> R$ ${melhorQualidade.custoDiario.toFixed(2)}</p>
-        <p><strong>Duração do Pacote:</strong> ${Math.floor(melhorQualidade.duracaoPacote)} dias</p>
-        <p><strong>Link:</strong> ${melhorQualidade.link ? `<a href="${melhorQualidade.link}" target="_blank">Comprar</a>` : "Não disponível"}</p>
-      `;
-    } else {
-      melhorQualidadeContainer.innerHTML = `<h3>Melhor Opção de Qualidade</h3><p>Nenhuma disponível.</p>`;
-    }
-  }
-}
-
-// Função para encontrar as melhores rações
-function encontrarMelhoresRacoes(resultados) {
-  const categoriasOrdenadas = ["super premium", "premium", "standard"];
-
-  const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
-
-  const racaoMaisEconomica = resultadosOrdenados[0];
-
-  const racaoMelhorQualidade = resultadosOrdenados.find(
-    r => categoriasOrdenadas.indexOf(r.categoria.toLowerCase()) <
-         categoriasOrdenadas.indexOf(racaoMaisEconomica.categoria.toLowerCase())
-  ) || resultadosOrdenados[0];
-
-  return { racaoMaisEconomica, racaoMelhorQualidade };
-}
-
 // Evento DOMContentLoaded e lógica do botão
 document.addEventListener("DOMContentLoaded", () => {
   const calcularButton = document.getElementById("calcular");
@@ -130,16 +83,16 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("Preencha todos os campos corretamente.");
           return;
         }
-        
-        // Ajuste pelo fator da idade
-let fatorIdade = 1;
-if (idade < 1) {
-    fatorIdade = 1.5; // Jovem
-} else if (idade > 7) {
-    fatorIdade = 0.8; // Idosos
-}
-const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade * fatorIdade;
 
+        // Ajuste pelo fator da idade
+        let fatorIdade = 1;
+        if (idade < 1) {
+          fatorIdade = 1.5; // Filhotes
+        } else if (idade > 7) {
+          fatorIdade = 0.8; // Idosos
+        }
+
+        const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade * fatorIdade;
         const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
         const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
 
@@ -148,10 +101,7 @@ const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade * fatorIdade;
           return;
         }
 
-        const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
-
-        // Exibir resultados
-        mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
+        // Atualizar tabela e exibir resultados
         const resultsContainer = document.getElementById("results");
         if (resultsContainer) {
           resultsContainer.style.display = "block"; // Garante que os resultados estão visíveis
