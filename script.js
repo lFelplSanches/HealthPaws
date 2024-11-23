@@ -1,6 +1,9 @@
 if (typeof historico === "undefined") {
   var historico = [];
 }
+if (typeof historico === "undefined") {
+  var historico = [];
+}
 
 if (typeof racoes === "undefined") {
   var racoes = [];
