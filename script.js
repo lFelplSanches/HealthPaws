@@ -3,15 +3,15 @@ let historico = [];
 let racoes = [];
 
 // Função para carregar os dados das rações
-async function carregarRacoes() {
+async function carregarRacoesPorTipo(tipoPet) {
   try {
-    const response = await fetch('./racoes.csv'); // Carregar arquivo CSV local
+    const response = await fetch('./racoes.csv'); // Carregar arquivo CSV
     if (!response.ok) {
       throw new Error("Erro ao carregar o arquivo CSV");
     }
     const data = await response.text();
     const linhas = data.split('\n').slice(1); // Ignorar o cabeçalho
-    racoes = linhas
+    return linhas
       .filter(l => l.trim() !== "") // Ignorar linhas vazias
       .map(l => {
         const [nome, preco, densidade, pesoPacote, tipo, categoria, compra] = l.split(',');
@@ -24,34 +24,54 @@ async function carregarRacoes() {
           categoria: categoria ? categoria.trim().toLowerCase() : "standard",
           compra: compra ? compra.trim() : null
         };
-      });
-    console.log("Rações carregadas:", racoes); // Log para depuração
+      })
+      .filter(r => r.tipo === tipoPet.toLowerCase()); // Filtrar por tipo de pet
   } catch (error) {
-    console.error("Erro ao carregar as rações:", error);
+    console.error("Erro ao carregar as rações por tipo:", error);
     alert("Erro ao carregar os dados das rações. Verifique o arquivo e tente novamente.");
+    return [];
   }
 }
 
-// Inicializar ao carregar
-document.addEventListener("DOMContentLoaded", () => {
-  carregarRacoes();
+// Validar o peso do pacote para o tipo de pet selecionado
+async function validarPesoPacote(tipoPet, pesoPacoteSelecionado) {
+  const racoesFiltradas = await carregarRacoesPorTipo(tipoPet);
+  const pesosDisponiveis = racoesFiltradas.map(r => r.pesoPacote); // Coletar os pesos disponíveis
+  if (!pesosDisponiveis.includes(pesoPacoteSelecionado)) {
+    alert(
+      `O peso do pacote de ${pesoPacoteSelecionado} kg não está disponível para o tipo de pet selecionado.
+` +
+      `Pesos disponíveis: ${[...new Set(pesosDisponiveis)].join(', ')} kg`
+    );
+    return false;
+  }
+  return true;
+}
 
+// Ajustar a lógica do botão "Calcular"
+document.addEventListener("DOMContentLoaded", () => {
   const calcularButton = document.getElementById("calcular");
-  calcularButton.addEventListener("click", () => {
+  calcularButton.addEventListener("click", async () => {
     const tipoPet = document.getElementById("tipo-pet").value.toLowerCase();
     const peso = parseFloat(document.getElementById("peso").value);
     const idade = document.getElementById("idade").value;
     const atividade = parseFloat(document.getElementById("atividade").value);
+    const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote").value);
 
-    if (!tipoPet || isNaN(peso) || !idade || isNaN(atividade)) {
+    if (!tipoPet || isNaN(peso) || !idade || isNaN(atividade) || isNaN(pesoPacoteSelecionado)) {
       alert("Preencha todos os campos corretamente.");
       return;
     }
 
+    // Validar o peso do pacote antes de continuar
+    const pesoValido = await validarPesoPacote(tipoPet, pesoPacoteSelecionado);
+    if (!pesoValido) return;
+
     const RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
     const consumoDiarioKcal = RER * atividade;
 
-    const resultados = calcularProdutos(consumoDiarioKcal);
+    const racoesFiltradas = await carregarRacoesPorTipo(tipoPet);
+    const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
 
     if (resultados.length === 0) {
       alert("Nenhuma ração disponível para o tipo de pet selecionado.");
