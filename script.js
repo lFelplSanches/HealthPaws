@@ -10,14 +10,29 @@ document.addEventListener("DOMContentLoaded", () => {
             const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote")?.value);
 
             // Validação dos campos
-            if (!tipoPet || peso <= 0 || idade < 0 || atividade <= 0 || pesoPacoteSelecionado <= 0) {
+            if (!tipoPet || peso <= 0 || idade < 0 || atividade <= 0 || isNaN(pesoPacoteSelecionado) || pesoPacoteSelecionado <= 0) {
                 alert("Preencha todos os campos corretamente.");
                 return;
             }
 
-            // Lógica de cálculo
+            // Log dos valores capturados para depuração
+            console.log("Dados capturados para envio:", { tipoPet, peso, idade, atividade, pesoPacoteSelecionado });
+
+            // Envia os dados para o backend
+            const response = await fetch('http://localhost:3000/filter-racoes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tipoPet, pesoPacote: pesoPacoteSelecionado })
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao enviar dados para o servidor.");
+            }
+
+            const racoesFiltradas = await response.json();
+
+            // Lógica de cálculo e exibição de resultados
             const consumoDiarioKcal = calcularConsumoDiario(peso, atividade, idade);
-            const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
             const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
 
             if (resultados.length === 0) {
@@ -25,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Exibe os resultados na tabela
             const resultsContainer = document.getElementById("results");
             if (resultsContainer) {
                 resultsContainer.style.display = "block"; // Mostra os resultados
@@ -58,27 +72,6 @@ function calcularConsumoDiario(peso, atividade, idade) {
     const consumoDiarioKcal = 70 * Math.pow(peso, 0.75) * atividade * fatorIdade;
     console.log(`Consumo diário (kcal): ${consumoDiarioKcal.toFixed(2)} (Idade: ${idade}, Fator Idade: ${fatorIdade})`);
     return consumoDiarioKcal;
-}
-
-// Função para carregar os dados das rações
-async function carregarRacoesPorTipo(tipoPet, pesoPacote) {
-    try {
-        const response = await fetch('http://localhost:3000/filter-racoes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tipoPet, pesoPacote })
-        });
-
-        if (!response.ok) {
-            throw new Error("Erro ao carregar os dados do servidor.");
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error("Erro ao carregar as rações:", error);
-        alert("Erro ao carregar os dados das rações. Verifique sua conexão com o servidor.");
-        return [];
-    }
 }
 
 // Função para calcular os produtos
