@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Paws</title>
+    <title>Cadastro do Pet - HealthPaws</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="gradient-background">
     <div class="sidebar">
         <h2>Health Paws</h2>
         <ul>
@@ -16,9 +16,13 @@
             <li><a href="https://fofuradepelo.lojavirtualnuvem.com.br/">Loja</a></li>
         </ul>
     </div>
-    <div class="main-content">
-        <h1>Cadastro do Pet</h1>
-        <form id="form-pet">
+    <div class="main-content animated-content">
+        <h1 class="animated-title">Cadastro do Pet</h1>
+        <form id="form-pet" class="animated-form">
+            <div class="form-group">
+                <label for="nome">Nome do Pet:</label>
+                <input type="text" id="nome" placeholder="Digite o nome">
+            </div>
             <div class="form-group">
                 <label for="tipo-pet">Tipo do Pet:</label>
                 <select id="tipo-pet">
@@ -27,33 +31,24 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="peso">Peso do Pet (em kg):</label>
-                <input type="number" id="peso" placeholder="Peso do Pet (em kg)">
+                <label for="peso">Peso (kg):</label>
+                <input type="number" id="peso" placeholder="Digite o peso">
             </div>
             <div class="form-group">
-                <label for="idade">Idade do Pet (em anos):</label>
-                <input type="number" id="idade" placeholder="Idade do Pet (em anos)">
+                <label for="idade">Idade (anos):</label>
+                <input type="number" id="idade" placeholder="Digite a idade">
             </div>
             <div class="form-group">
-                <label for="atividade">Nível de Atividade:</label>
+                <label for="atividade">Atividade:</label>
                 <select id="atividade">
                     <option value="1.2">Baixa</option>
                     <option value="1.5">Moderada</option>
                     <option value="1.8">Alta</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="peso-pacote">Peso do Pacote de Ração (em kg):</label>
-                <select id="peso-pacote">
-                    <option value="1">1 kg</option>
-                    <option value="5">5 kg</option>
-                    <option value="10">10 kg</option>
-                    <option value="15">15 kg</option>
-                </select>
-            </div>
-            <button type="button" id="calcular">Calcular</button>
+            <button type="button" id="calcular" class="animated-button">Calcular</button>
         </form>
-        <div id="results" style="display: none;">
+        <div id="results" class="animated-results" style="display: none;">
             <h2>Resultados</h2>
             <table>
                 <thead>
@@ -62,7 +57,7 @@
                         <th>Preço Total (R$)</th>
                         <th>Consumo Diário (g)</th>
                         <th>Custo Diário (R$)</th>
-                        <th>Duração do Pacote (dias)</th>
+                        <th>Duração (dias)</th>
                         <th>Link</th>
                     </tr>
                 </thead>
@@ -70,6 +65,6 @@
             </table>
         </div>
     </div>
-    <script src="script.js"></script>
 </body>
+<script src="script.js"></script>
 </html>

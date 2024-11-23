@@ -1,115 +1,89 @@
-/* Estilo geral */
-body {
+/* Fundo com gradiente */
+.gradient-background {
+    background: linear-gradient(135deg, #20c6d6, #1ba5b3);
+    color: #fff;
+    height: 100vh;
     margin: 0;
+    display: flex;
+    flex-direction: column;
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
 }
 
-/* Menu lateral */
+/* Sidebar */
 .sidebar {
+    background-color: rgba(0, 0, 0, 0.7);
     width: 250px;
-    position: fixed;
-    top: 0;
-    left: 0;
     height: 100%;
-    background-color: #333;
-    color: white;
-    padding: 15px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    color: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .sidebar h2 {
     text-align: center;
     margin-bottom: 20px;
+    animation: fadeIn 2s ease-in-out;
 }
 
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin: 15px 0;
-}
-
-.sidebar ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    display: block;
-    padding: 8px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.sidebar ul li a.active,
-.sidebar ul li a:hover {
-    background-color: #575757;
+.sidebar ul li a.active {
+    background-color: #20c6d6;
 }
 
 /* Conteúdo principal */
 .main-content {
-    margin-left: 260px;
+    margin-left: 270px;
     padding: 20px;
+    animation: slideIn 1s ease-out;
 }
 
-h1 {
-    color: #333;
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-/* Formulário */
-.form-group {
-    margin-bottom: 15px;
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+.animated-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
 }
 
-input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
+.animated-button {
+    background-color: #fff;
+    color: #20c6d6;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
     border-radius: 5px;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #4CAF50;
-    color: white;
     cursor: pointer;
+    animation: bounce 2s infinite ease-in-out;
 }
 
-button:hover {
-    background-color: #45a049;
+.animated-button:hover {
+    background-color: #f1f1f1;
 }
 
-/* Resultados */
-#results {
-    margin-top: 20px;
-}
-
+/* Estilização de tabela */
 table {
-    width: 100%;
+    margin-top: 20px;
     border-collapse: collapse;
-    margin-top: 10px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 th {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #20c6d6;
+    color: #fff;
+}
+
+td, th {
+    padding: 10px;
+    text-align: left;
 }
 
 /* Responsividade */
@@ -120,10 +94,6 @@ th {
 
     .main-content {
         margin-left: 210px;
-    }
-
-    table, th, td {
-        font-size: 14px;
     }
 }
 
