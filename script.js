@@ -1,3 +1,4 @@
+
 let historico = [];
 let racoes = [];
 
@@ -29,13 +30,15 @@ async function validarPesoPacote(tipoPet, pesoPacoteSelecionado) {
   const pesosDisponiveis = racoesFiltradas.map(r => parseFloat(r.pesoPacote));
 
   if (!pesosDisponiveis.includes(pesoPacoteSelecionado)) {
-    alert(`O peso do pacote de ${pesoPacoteSelecionado} kg não está disponível para o tipo de pet selecionado.\n` +
+    alert(`O peso do pacote de ${pesoPacoteSelecionado} kg não está disponível para o tipo de pet selecionado.
+` +
       `Pesos disponíveis: ${[...new Set(pesosDisponiveis)].join(', ')} kg`);
     return false;
   }
   return true;
 }
-// Ajustar a lógica do botão "Calcular"
+
+// Evento de DOMContentLoaded e lógica do botão
 document.addEventListener("DOMContentLoaded", () => {
   const calcularButton = document.getElementById("calcular");
 
@@ -54,24 +57,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const pesoValido = await validarPesoPacote(tipoPet, pesoPacoteSelecionado);
     if (!pesoValido) return;
 
-    // Ajustar o RER com base na idade
+    // Função para calcular o RER
     function calcularRER(tipoPet, peso, idade) {
-  let RER;
+      let RER;
 
-  if (idade < 1) {
-    // Filhotes: Maior necessidade calórica
-    RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) * 3 : 100 * Math.pow(peso, 0.67) * 2.5;
-  } else if (idade >= 1 && idade <= 7) {
-    // Adultos: Necessidade padrão
-    RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
-  } else {
-    // Idosos: Menor necessidade calórica
-    RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) * 0.8 : 100 * Math.pow(peso, 0.67) * 0.8;
-  }
+      if (idade < 1) {
+        // Filhotes: Maior necessidade calórica
+        RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) * 3 : 100 * Math.pow(peso, 0.67) * 2.5;
+      } else if (idade >= 1 && idade <= 7) {
+        // Adultos: Necessidade padrão
+        RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) : 100 * Math.pow(peso, 0.67);
+      } else {
+        // Idosos: Menor necessidade calórica
+        RER = tipoPet === "cao" ? 70 * Math.pow(peso, 0.75) * 0.8 : 100 * Math.pow(peso, 0.67) * 0.8;
+      }
 
-  return RER;
-}
+      return RER;
+    }
 
+    const RER = calcularRER(tipoPet, peso, idade);
     const consumoDiarioKcal = RER * atividade;
 
     const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
@@ -91,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("results").style.display = "block";
   });
 });
+
 // Função para calcular os produtos
 function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado) {
   const tableBody = document.getElementById("tableBody");
@@ -119,28 +124,6 @@ function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecion
   });
 }
 
-// Cálculo do RER com a nova função
-    const RER = calcularRER(tipoPet, peso, idade);
-    const consumoDiarioKcal = RER * atividade;
-
-    const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
-    const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
-
-    if (resultados.length === 0) {
-      alert("Nenhuma ração disponível para o tipo de pet selecionado.");
-      return;
-    }
-
-    const { racaoMaisEconomica, racaoMelhorQualidade } = encontrarMelhoresRacoes(resultados);
-
-    mostrarMelhoresRacoes(racaoMaisEconomica, racaoMelhorQualidade);
-    mostrarEconomia(resultados);
-    mostrarAnaliseEconomicaDetalhada(racaoMaisEconomica, racaoMelhorQualidade, consumoDiarioKcal);
-
-    document.getElementById("results").style.display = "block";
-  });
-});
-
 // Função para mostrar as melhores rações
 function mostrarMelhoresRacoes(melhor, qualidade) {
   const melhorEconomica = document.getElementById("melhor-economica");
@@ -162,6 +145,7 @@ function mostrarMelhoresRacoes(melhor, qualidade) {
     melhorQualidade.innerHTML = `<h3>Melhor Opção de Qualidade</h3><p>Nenhuma disponível.</p>`;
   }
 }
+
 // Função para mostrar análise econômica detalhada
 function mostrarAnaliseEconomicaDetalhada(melhor, qualidade, consumoDiarioKcal) {
   const comparativoDetalhado = document.getElementById("comparativo-detalhado");
@@ -195,35 +179,4 @@ function mostrarAnaliseEconomicaDetalhada(melhor, qualidade, consumoDiarioKcal) 
       </tbody>
     </table>
   `;
-}
-// Função para mostrar análise de economia
-function mostrarEconomia(resultados) {
-  const economiaContainer = document.getElementById("economia");
-  economiaContainer.innerHTML = "<h3>Análise de Economia</h3>";
-
-  const [melhor, segundaMelhor] = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
-  const economiaAbsoluta = segundaMelhor.custoDiario - melhor.custoDiario;
-  const economiaPercentual = ((economiaAbsoluta / segundaMelhor.custoDiario) * 100).toFixed(2);
-
-  economiaContainer.innerHTML += `
-    <p>Escolhendo a ração <strong>${melhor.nome}</strong>, você economiza:</p>
-    <ul>
-      <li><strong>R$ ${economiaAbsoluta.toFixed(2)}</strong> por dia.</li>
-      <li><strong>${economiaPercentual}%</strong> em relação à segunda opção mais econômica.</li>
-    </ul>
-  `;
-}
-// Função para encontrar as melhores rações
-function encontrarMelhoresRacoes(resultados) {
-  const categoriasOrdenadas = ["super premium", "premium", "standard"];
-
-  const resultadosOrdenados = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
-
-  const racaoMaisEconomica = resultadosOrdenados[0];
-
-  const racaoMelhorQualidade = resultadosOrdenados.find(
-    r => categoriasOrdenadas.indexOf(r.categoria.toLowerCase()) < categoriasOrdenadas.indexOf(racaoMaisEconomica.categoria.toLowerCase())
-  ) || resultadosOrdenados[0];
-
-  return { racaoMaisEconomica, racaoMelhorQualidade };
 }
