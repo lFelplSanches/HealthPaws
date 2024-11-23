@@ -77,3 +77,50 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("results").style.display = "block";
   });
 });
+
+
+// Função para calcular os produtos
+function calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado) {
+  const tableBody = document.getElementById("tableBody");
+  tableBody.innerHTML = "";
+
+  return racoesFiltradas.map(r => {
+    const precoPorKg = r.preco / r.pesoPacote;
+    const precoAtualizado = precoPorKg * pesoPacoteSelecionado;
+
+    const consumoDiarioGramas = (consumoDiarioKcal / r.densidade) * 1000;
+    const custoDiario = (consumoDiarioGramas / 1000) * precoPorKg;
+    const duracaoPacote = (pesoPacoteSelecionado * 1000) / consumoDiarioGramas;
+
+    tableBody.innerHTML += `
+      <tr>
+        <td>${r.nome}</td>
+        <td>R$ ${precoAtualizado.toFixed(2)}</td>
+        <td>${consumoDiarioGramas.toFixed(2)} g</td>
+        <td>R$ ${custoDiario.toFixed(2)}</td>
+        <td>${Math.floor(duracaoPacote)} dias</td>
+        <td>${r.compra ? `<a href="${r.compra}" target="_blank">Comprar</a>` : "N/A"}</td>
+      </tr>
+    `;
+
+    return { ...r, custoDiario, duracaoPacote };
+  });
+}
+
+// Função para mostrar economia
+function mostrarEconomia(resultados) {
+  const economiaContainer = document.getElementById("economia");
+  economiaContainer.innerHTML = "<h3>Análise de Economia</h3>";
+
+  const [melhor, segundaMelhor] = resultados.sort((a, b) => a.custoDiario - b.custoDiario);
+  const economiaAbsoluta = segundaMelhor.custoDiario - melhor.custoDiario;
+  const economiaPercentual = ((economiaAbsoluta / segundaMelhor.custoDiario) * 100).toFixed(2);
+
+  economiaContainer.innerHTML += `
+    <p>Escolhendo a ração <strong>${melhor.nome}</strong>, você economiza:</p>
+    <ul>
+      <li><strong>R$ ${economiaAbsoluta.toFixed(2)}</strong> por dia.</li>
+      <li><strong>${economiaPercentual}%</strong> em relação à segunda opção mais econômica.</li>
+    </ul>
+  `;
+}
