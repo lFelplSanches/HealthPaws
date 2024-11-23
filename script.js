@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Função principal de cálculo
     async function processarCalculo() {
         try {
+            // Captura os valores do formulário
             const tipoPet = document.getElementById("tipo-pet")?.value.toLowerCase();
             const peso = parseFloat(document.getElementById("peso")?.value);
             const idade = parseFloat(document.getElementById("idade")?.value);
@@ -14,13 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            console.log("Dados capturados com sucesso. Continuando o cálculo...");
-            // Aqui vai a lógica do cálculo
-        } catch (error) {
-            console.error("Erro ao processar o cálculo:", error);
-        }
-    }
-            // Lógica de cálculo (adapte conforme necessário)
+            // Lógica de cálculo
             const consumoDiarioKcal = calcularConsumoDiario(peso, atividade, idade);
             const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
             const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
@@ -30,9 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            // Exibe os resultados na tabela
             const resultsContainer = document.getElementById("results");
             if (resultsContainer) {
-                resultsContainer.style.display = "block"; // Mostra resultados
+                resultsContainer.style.display = "block"; // Mostra os resultados
             } else {
                 console.error("Elemento 'results' não encontrado no DOM.");
             }
