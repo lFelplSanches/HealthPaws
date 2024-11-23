@@ -26,7 +26,10 @@ async function carregarRacoesPorTipo(tipoPet, pesoPacote) {
 // Validar o peso do pacote para o tipo de pet selecionado
 async function validarPesoPacote(tipoPet, pesoPacoteSelecionado) {
   const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
-  const pesosDisponiveis = racoesFiltradas.map(r => r.pesoPacote);
+
+  // Certifique-se de comparar os valores como números
+  const pesosDisponiveis = racoesFiltradas.map(r => parseFloat(r.pesoPacote));
+
   if (!pesosDisponiveis.includes(pesoPacoteSelecionado)) {
     alert(`O peso do pacote de ${pesoPacoteSelecionado} kg não está disponível para o tipo de pet selecionado.
 ` +
