@@ -140,3 +140,26 @@ function encontrarMelhoresRacoes(resultados) {
 
   return { racaoMaisEconomica, racaoMelhorQualidade };
 }
+
+
+// Função para mostrar as melhores rações
+function mostrarMelhoresRacoes(melhor, qualidade) {
+  const melhorEconomica = document.getElementById("melhor-economica");
+  const melhorQualidade = document.getElementById("melhor-qualidade");
+
+  // Exibe a melhor opção econômica
+  melhorEconomica.innerHTML = `
+    <h3>Melhor Opção Econômica</h3>
+    <p>Ração: ${melhor.nome}</p>
+    <p>Custo Diário: R$ ${melhor.custoDiario.toFixed(2)}</p>
+  `;
+
+  // Exibe a melhor opção de qualidade, se disponível
+  if (qualidade) {
+    melhorQualidade.innerHTML = `
+      <h3>Melhor Opção de Qualidade</h3>
+      <p>Ração: ${qualidade.nome}</p>
+      <p>Custo Diário: R$ ${qualidade.custoDiario.toFixed(2)}</p>
+    `;
+  }
+}
