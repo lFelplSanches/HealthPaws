@@ -9,30 +9,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const atividade = parseFloat(document.getElementById("atividade")?.value);
             const pesoPacoteSelecionado = parseFloat(document.getElementById("peso-pacote")?.value);
 
+            // Logs para depuração
+            console.log("Valores capturados:", { tipoPet, peso, idade, atividade, pesoPacoteSelecionado });
+
             // Validação dos campos
-            if (!tipoPet || peso <= 0 || idade < 0 || atividade <= 0 || isNaN(pesoPacoteSelecionado) || pesoPacoteSelecionado <= 0) {
+            if (!tipoPet || peso <= 0 || isNaN(peso) || idade < 0 || isNaN(idade) || atividade <= 0 || isNaN(atividade) || pesoPacoteSelecionado <= 0 || isNaN(pesoPacoteSelecionado)) {
                 alert("Preencha todos os campos corretamente.");
                 return;
             }
 
-            // Log dos valores capturados para depuração
-            console.log("Dados capturados para envio:", { tipoPet, peso, idade, atividade, pesoPacoteSelecionado });
-
-            // Envia os dados para o backend
-            const response = await fetch('http://localhost:3000/filter-racoes', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tipoPet, pesoPacote: pesoPacoteSelecionado })
-            });
-
-            if (!response.ok) {
-                throw new Error("Erro ao enviar dados para o servidor.");
-            }
-
-            const racoesFiltradas = await response.json();
-
-            // Lógica de cálculo e exibição de resultados
+            // Lógica de cálculo
             const consumoDiarioKcal = calcularConsumoDiario(peso, atividade, idade);
+            const racoesFiltradas = await carregarRacoesPorTipo(tipoPet, pesoPacoteSelecionado);
             const resultados = calcularProdutos(consumoDiarioKcal, racoesFiltradas, pesoPacoteSelecionado);
 
             if (resultados.length === 0) {
